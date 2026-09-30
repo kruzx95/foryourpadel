@@ -14,6 +14,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  
+  <!-- PWA Meta Tags & Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#5B21B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FYP Padel">
+  <link rel="apple-touch-icon" href="/pwa-icon-192.png">
 </head>
 <body>
 
@@ -33,15 +41,22 @@
       <ul class="navbar__links" id="nav-links">
         <li><a href="#about" class="navbar__link" id="nav-about">Tentang</a></li>
         <li><a href="#facilities" class="navbar__link" id="nav-facilities">Fasilitas</a></li>
+        <li><a href="#booking" class="navbar__link" id="nav-booking">Booking</a></li>
         <li><a href="#gallery" class="navbar__link" id="nav-gallery">Galeri</a></li>
         <li><a href="#tournament" class="navbar__link" id="nav-tournament">Tournament</a></li>
         <li><a href="#syarat" class="navbar__link" id="nav-syarat">Kualifikasi</a></li>
         <li><a href="#contact" class="navbar__link" id="nav-contact">Kontak</a></li>
       </ul>
-      <a href="https://wa.me/6287886633636?text=Halo%20FYP%2C%20saya%20ingin%20booking%20lapangan" target="_blank" rel="noopener" class="navbar__cta" id="nav-booking-cta">
-        Book Court
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <div class="navbar__actions">
+        <button type="button" class="navbar__pwa-btn" id="btnNavInstallPwa" aria-label="Install App" title="Install FYP Padel App">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Install App</span>
+        </button>
+        <a href="#booking" class="navbar__cta" id="nav-booking-cta">
+          Book Court
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
       <button class="navbar__burger" id="nav-burger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -51,12 +66,19 @@
       <ul class="navbar__mobile-links">
         <li><a href="#about" class="navbar__mobile-link">Tentang</a></li>
         <li><a href="#facilities" class="navbar__mobile-link">Fasilitas</a></li>
+        <li><a href="#booking" class="navbar__mobile-link">Booking</a></li>
         <li><a href="#gallery" class="navbar__mobile-link">Galeri</a></li>
         <li><a href="#tournament" class="navbar__mobile-link">Tournament</a></li>
         <li><a href="#syarat" class="navbar__mobile-link">Kualifikasi</a></li>
         <li><a href="#contact" class="navbar__mobile-link">Kontak</a></li>
       </ul>
-      <a href="https://wa.me/6287886633636?text=Halo%20FYP%2C%20saya%20ingin%20booking%20lapangan" target="_blank" rel="noopener" class="navbar__mobile-cta">Book Court →</a>
+      <div class="navbar__mobile-actions">
+        <button type="button" class="navbar__mobile-pwa-btn" id="btnMobileInstallPwa">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Install FYP App</span>
+        </button>
+        <a href="#booking" class="navbar__mobile-cta">Book Court →</a>
+      </div>
     </div>
   </nav>
 
@@ -84,7 +106,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg>
           Smash for Smiles
         </a>
-        <a href="https://wa.me/6287886633636?text=Halo%20FYP%2C%20saya%20ingin%20booking%20lapangan" target="_blank" rel="noopener" class="btn btn--glass" id="hero-booking-btn">
+        <a href="#booking" class="btn btn--glass" id="hero-booking-btn">
           Booking Lapangan
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -229,6 +251,400 @@
       </div>
     </div>
   </section>
+
+  <!-- ═══════════════ BOOKING & PRICE CALCULATOR SECTION ═══════════════ -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="booking__header reveal">
+        <p class="section-eyebrow">Booking & Tarif Lapangan</p>
+        <h2 class="section-title">Kalkulator Sewa & <span class="text-accent">Reservasi Lapangan</span></h2>
+        <p class="section-subtitle">
+          Pilih lapangan favorit, tentukan waktu main, dan tambahkan perlengkapan yang dibutuhkan. Estimasi biaya dihitung otomatis dan siap dikirim langsung ke WhatsApp Admin FYP.
+        </p>
+      </div>
+
+      <!-- Live Tasikmalaya Weather Widget -->
+      <div class="weather-widget reveal" id="courtWeatherWidget">
+        <div class="weather-widget__inner">
+          <div class="weather-widget__main">
+            <div class="weather-widget__icon-wrap" id="weatherIconWrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+            <div class="weather-widget__text-group">
+              <div class="weather-widget__city">
+                <span class="weather-pulse"></span>
+                <span>Cuaca Lapangan Real-Time · <strong>Tasikmalaya</strong></span>
+              </div>
+              <div class="weather-widget__temp-row">
+                <span class="weather-widget__temp" id="weatherTemp">27°C</span>
+                <span class="weather-widget__condition" id="weatherCondition">Cerah Berawan</span>
+              </div>
+            </div>
+          </div>
+          <div class="weather-widget__metrics">
+            <div class="weather-metric">
+              <span class="weather-metric__label">Status Court</span>
+              <span class="weather-badge weather-badge--good" id="weatherPlayStatus">🟢 Ideal Bermain</span>
+            </div>
+            <div class="weather-metric">
+              <span class="weather-metric__label">Kelembapan</span>
+              <strong class="weather-metric__val" id="weatherHumidity">75%</strong>
+            </div>
+            <div class="weather-metric">
+              <span class="weather-metric__label">Kecepatan Angin</span>
+              <strong class="weather-metric__val" id="weatherWind">8 km/h</strong>
+            </div>
+            <button type="button" class="weather-refresh-btn" id="btnRefreshWeather" title="Perbarui Data Cuaca" aria-label="Perbarui data cuaca">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking__grid">
+        <!-- Main Form Area -->
+        <div class="booking__form-wrap reveal">
+
+          <!-- Step 1: Lapangan -->
+          <div class="booking__step" id="booking-step-court">
+            <div class="booking__step-header">
+              <span class="booking__step-badge">1</span>
+              <div>
+                <h3 class="booking__step-title">Pilih Lapangan</h3>
+                <p class="booking__step-desc">Semua lapangan berstandar internasional dengan pencahayaan LED 1000 lux.</p>
+              </div>
+            </div>
+            <div class="court-cards" id="courtCards">
+              <div class="court-card is-active" data-court="1" data-name="Court 1 (Panoramic Center)" tabindex="0" role="button" aria-pressed="true">
+                <div class="court-card__badge">Center Court</div>
+                <div class="court-card__icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18"/></svg>
+                </div>
+                <h4 class="court-card__title">Court 1 · Center</h4>
+                <p class="court-card__desc">Panoramic tempered glass tanpa tiang sudut, view lega dan megah.</p>
+                <div class="court-card__rate-row">
+                  <span class="court-card__rate-tag">Mulai</span>
+                  <span class="court-card__rate-val">Rp 200.000<small>/jam</small></span>
+                </div>
+                <div class="court-card__check">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+
+              <div class="court-card" data-court="2" data-name="Court 2 (Tournament Court)" tabindex="0" role="button" aria-pressed="false">
+                <div class="court-card__badge">Standar FIP</div>
+                <div class="court-card__icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg>
+                </div>
+                <h4 class="court-card__title">Court 2 · Turnamen</h4>
+                <p class="court-card__desc">Karpet Mondo resmi FIP dengan pantulan bola presisi untuk kompetisi.</p>
+                <div class="court-card__rate-row">
+                  <span class="court-card__rate-tag">Mulai</span>
+                  <span class="court-card__rate-val">Rp 200.000<small>/jam</small></span>
+                </div>
+                <div class="court-card__check">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+
+              <div class="court-card" data-court="3" data-name="Court 3 (Club Court)" tabindex="0" role="button" aria-pressed="false">
+                <div class="court-card__badge">Favorit Mabar</div>
+                <div class="court-card__icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h4 class="court-card__title">Court 3 · Club</h4>
+                <p class="court-card__desc">Akses cepat ke lounge & café, suasana asik untuk latihan & fun match.</p>
+                <div class="court-card__rate-row">
+                  <span class="court-card__rate-tag">Mulai</span>
+                  <span class="court-card__rate-val">Rp 200.000<small>/jam</small></span>
+                </div>
+                <div class="court-card__check">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Tanggal & Durasi -->
+          <div class="booking__step" id="booking-step-datetime">
+            <div class="booking__step-header">
+              <span class="booking__step-badge">2</span>
+              <div>
+                <h3 class="booking__step-title">Pilih Tanggal & Durasi</h3>
+                <p class="booking__step-desc">Tentukan hari dan berapa lama sesi bermain kamu.</p>
+              </div>
+            </div>
+
+            <!-- Quick Date Picker -->
+            <div class="date-quick-picker" id="dateQuickPicker">
+              <!-- Populated by JavaScript with real dates -->
+            </div>
+
+            <!-- Custom Date Row -->
+            <div class="date-custom-row">
+              <label for="customDatePicker" class="custom-date-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>Atau pilih tanggal kalender:</span>
+              </label>
+              <input type="date" id="customDatePicker" class="custom-date-input">
+            </div>
+
+            <!-- Duration Selectors -->
+            <div class="duration-section">
+              <span class="duration-section__title">Durasi Main:</span>
+              <div class="duration-cards" id="durationCards">
+                <button type="button" class="duration-btn" data-hours="1">1 Jam</button>
+                <button type="button" class="duration-btn" data-hours="1.5">1.5 Jam</button>
+                <button type="button" class="duration-btn is-active" data-hours="2">
+                  2 Jam
+                  <span class="duration-btn__tag">Populer</span>
+                </button>
+                <button type="button" class="duration-btn" data-hours="3">3 Jam</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Waktu Bermain -->
+          <div class="booking__step" id="booking-step-time">
+            <div class="booking__step-header">
+              <span class="booking__step-badge">3</span>
+              <div>
+                <h3 class="booking__step-title">Pilih Jam Mulai</h3>
+                <p class="booking__step-desc">Sesi terbagi menjadi tarif Siang (Off-Peak) dan Malam (Peak Hours).</p>
+              </div>
+            </div>
+
+            <!-- Session Rate Indicator Notice -->
+            <div class="rate-banner">
+              <div class="rate-banner__item rate-banner__item--offpeak">
+                <span class="rate-dot rate-dot--mint"></span>
+                <span><strong>Off-Peak (06:00 – 15:00):</strong> Rp 200.000 / jam</span>
+              </div>
+              <div class="rate-banner__item rate-banner__item--peak">
+                <span class="rate-dot rate-dot--purple"></span>
+                <span><strong>Peak Hours (15:00 – 23:00):</strong> Rp 280.000 / jam</span>
+              </div>
+            </div>
+
+            <!-- Time slot buttons -->
+            <div class="time-slots" id="timeSlots">
+              <!-- Rendered by JavaScript based on available hours -->
+            </div>
+            
+            <div class="time-slot-selected-info" id="timeSlotSelectedInfo">
+              <div class="time-slot-selected-info__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="time-slot-selected-info__text">
+                Jadwal Dipilih: <strong id="slotScheduleDisplay">19:00 - 21:00 WIB</strong>
+                <span class="session-badge session-badge--peak" id="slotSessionBadge">Peak Hours</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Perlengkapan Tambahan & Add-ons -->
+          <div class="booking__step" id="booking-step-addons">
+            <div class="booking__step-header">
+              <span class="booking__step-badge">4</span>
+              <div>
+                <h3 class="booking__step-title">Perlengkapan & Add-On</h3>
+                <p class="booking__step-desc">Lengkapi kebutuhan pertandinganmu dengan raket sewa, bola baru, atau asisten.</p>
+              </div>
+            </div>
+
+            <div class="addons-list">
+              <!-- Add-on 1: Sewa Raket -->
+              <div class="addon-item">
+                <div class="addon-item__icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="M12 15v7M9 22h6"/></svg>
+                </div>
+                <div class="addon-item__info">
+                  <h4 class="addon-item__title">Sewa Raket Padel</h4>
+                  <p class="addon-item__desc">Raket carbon composite siap pakai dengan overgrip higienis.</p>
+                  <span class="addon-item__price">+Rp 35.000 / raket</span>
+                </div>
+                <div class="addon-stepper">
+                  <button type="button" class="addon-stepper__btn" id="racketMinus" aria-label="Kurangi raket">−</button>
+                  <span class="addon-stepper__value" id="racketCount">0</span>
+                  <button type="button" class="addon-stepper__btn" id="racketPlus" aria-label="Tambah raket">+</button>
+                </div>
+              </div>
+
+              <!-- Add-on 2: Bola Padel Baru -->
+              <div class="addon-item">
+                <div class="addon-item__icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+                </div>
+                <div class="addon-item__info">
+                  <h4 class="addon-item__title">Bola Baru HEAD Padel Pro</h4>
+                  <p class="addon-item__desc">1 kaleng baru segel (isi 3 bola resmi turnamen).</p>
+                  <span class="addon-item__price">+Rp 85.000 / kaleng</span>
+                </div>
+                <div class="addon-stepper">
+                  <button type="button" class="addon-stepper__btn" id="ballsMinus" aria-label="Kurangi bola">−</button>
+                  <span class="addon-stepper__value" id="ballsCount">0</span>
+                  <button type="button" class="addon-stepper__btn" id="ballsPlus" aria-label="Tambah bola">+</button>
+                </div>
+              </div>
+
+              <!-- Add-on 3: Ball Boy -->
+              <div class="addon-item">
+                <div class="addon-item__icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                </div>
+                <div class="addon-item__info">
+                  <h4 class="addon-item__title">Ball Boy / Asisten Court</h4>
+                  <p class="addon-item__desc">Membantu memungut bola selama permainan agar rally lancar.</p>
+                  <span class="addon-item__price">+Rp 50.000 / jam</span>
+                </div>
+                <label class="addon-switch" aria-label="Toggle Ball Boy">
+                  <input type="checkbox" id="ballboyToggle">
+                  <span class="addon-switch__slider"></span>
+                </label>
+              </div>
+
+              <!-- Add-on 4: Sparring / Coach Partner -->
+              <div class="addon-item">
+                <div class="addon-item__icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="addon-item__info">
+                  <h4 class="addon-item__title">Coach / Sparring Partner</h4>
+                  <p class="addon-item__desc">Instruktur padel ramah untuk drill teknik atau sparring partner.</p>
+                  <span class="addon-item__price">+Rp 120.000 / jam</span>
+                </div>
+                <label class="addon-switch" aria-label="Toggle Coach Partner">
+                  <input type="checkbox" id="coachToggle">
+                  <span class="addon-switch__slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Data Pemesan -->
+          <div class="booking__step" id="booking-step-customer">
+            <div class="booking__step-header">
+              <span class="booking__step-badge">5</span>
+              <div>
+                <h3 class="booking__step-title">Data Pemesan</h3>
+                <p class="booking__step-desc">Untuk pencatatan nama di jadwal lapangan dan konfirmasi reservasi.</p>
+              </div>
+            </div>
+
+            <div class="booking__inputs-grid">
+              <div class="booking-field">
+                <label for="bookerName" class="booking-field__label">Nama Pemesan <span class="text-req">*</span></label>
+                <input type="text" id="bookerName" class="booking-field__input" placeholder="Nama lengkap atau panggilan..." required>
+              </div>
+              <div class="booking-field">
+                <label for="bookerPhone" class="booking-field__label">Nomor WhatsApp (Opsional)</label>
+                <input type="tel" id="bookerPhone" class="booking-field__input" placeholder="Contoh: 08123456789">
+              </div>
+              <div class="booking-field booking-field--full">
+                <label for="bookerNotes" class="booking-field__label">Catatan Tambahan (Opsional)</label>
+                <input type="text" id="bookerNotes" class="booking-field__input" placeholder="Contoh: Request bola tambahan, persiapan mini gathering, dll.">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky Right Column: Price Calculator & Summary Card -->
+        <div class="booking__summary-col reveal">
+          <div class="booking-summary-card" id="bookingSummaryCard">
+            <div class="booking-summary__header">
+              <div>
+                <span class="booking-summary__eyebrow">ESTIMASI BIAYA</span>
+                <h3 class="booking-summary__title">Ringkasan Reservasi</h3>
+              </div>
+              <div class="booking-summary__status">
+                <span class="status-pulse"></span> Siap Booking
+              </div>
+            </div>
+
+            <!-- Court & Schedule Pill -->
+            <div class="summary-court-box">
+              <div class="summary-court-box__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18"/></svg>
+              </div>
+              <div class="summary-court-box__details">
+                <div class="summary-court-box__name" id="sumCourtName">Court 1 (Panoramic Center)</div>
+                <div class="summary-court-box__time" id="sumSchedule">Hari Ini · 19:00 - 21:00 WIB (2 Jam)</div>
+              </div>
+            </div>
+
+            <!-- Line Items Breakdown -->
+            <div class="summary-breakdown">
+              <div class="summary-row">
+                <span class="summary-row__label" id="sumCourtRateLabel">Sewa Lapangan (2 Jam · Peak)</span>
+                <span class="summary-row__val" id="sumCourtCost">Rp 560.000</span>
+              </div>
+              <div class="summary-row" id="sumRacketRow" style="display: none;">
+                <span class="summary-row__label" id="sumRacketLabel">Sewa Raket (0 unit)</span>
+                <span class="summary-row__val" id="sumRacketCost">Rp 0</span>
+              </div>
+              <div class="summary-row" id="sumBallsRow" style="display: none;">
+                <span class="summary-row__label" id="sumBallsLabel">Bola HEAD Baru (0 can)</span>
+                <span class="summary-row__val" id="sumBallsCost">Rp 0</span>
+              </div>
+              <div class="summary-row" id="sumBallboyRow" style="display: none;">
+                <span class="summary-row__label" id="sumBallboyLabel">Ball Boy (2 Jam)</span>
+                <span class="summary-row__val" id="sumBallboyCost">Rp 100.000</span>
+              </div>
+              <div class="summary-row" id="sumCoachRow" style="display: none;">
+                <span class="summary-row__label" id="sumCoachLabel">Coach / Sparring (2 Jam)</span>
+                <span class="summary-row__val" id="sumCoachCost">Rp 240.000</span>
+              </div>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <!-- Total -->
+            <div class="summary-total">
+              <div>
+                <span class="summary-total__label">Total Estimasi</span>
+                <span class="summary-total__sub">Lampu kompetisi & fasilitas included</span>
+              </div>
+              <div class="summary-total__amount" id="sumGrandTotal">Rp 560.000</div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="summary-actions">
+              <button type="button" class="btn btn--whatsapp-glow" id="btnSendWhatsApp">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>Booking via WhatsApp</span>
+              </button>
+              <button type="button" class="btn btn--copy-chat" id="btnCopyChat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Salin Teks Format Booking</span>
+              </button>
+            </div>
+
+            <!-- Guarantee Info -->
+            <div class="summary-guarantee">
+              <div class="guarantee-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Tanpa Biaya Admin Tambahan</span>
+              </div>
+              <div class="guarantee-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Respon Cepat Admin Official FYP</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="bookingToast">
+    <div class="toast-notice__icon" id="toastIcon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <span class="toast-notice__message" id="toastMsg">Teks format berhasil disalin!</span>
+  </div>
 
   <!-- ═══════════════ GALLERY SECTION ═══════════════ -->
   <section class="gallery" id="gallery">
@@ -554,9 +970,9 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Chat via WhatsApp
             </a>
-            <a href="https://maps.google.com/?q=FYP+Padel+Court+Tasikmalaya" target="_blank" rel="noopener" class="btn btn--outline" id="contact-maps-btn">
+            <a href="#contactMapSection" class="btn btn--outline" id="contact-maps-btn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              Lihat Lokasi
+              Lihat Peta Lokasi
             </a>
           </div>
         </div>
@@ -567,7 +983,7 @@
             </div>
             <div>
               <strong>Alamat</strong>
-              <p>FYP Padel Court<br>Tasikmalaya, Jawa Barat</p>
+              <p id="fullAddressText">FYP Padel Court, Tasikmalaya, Jawa Barat</p>
             </div>
           </div>
           <div class="contact__info-item">
@@ -598,6 +1014,51 @@
           </div>
         </div>
       </div>
+
+      <!-- Google Maps Interactive Embed Card -->
+      <div class="contact__map-card reveal" id="contactMapSection">
+        <div class="contact__map-header">
+          <div class="contact__map-titles">
+            <div class="contact__map-badge">
+              <span class="status-pulse"></span> Peta Interaktif & Navigasi Rute
+            </div>
+            <h3 class="contact__map-heading">Kunjungi FYP Padel Court Tasikmalaya</h3>
+            <p class="contact__map-sub">
+              Lokasi strategis dengan area parkir mobil & motor luas, aman (CCTV 24 jam), serta fasilitas café terintegrasi.
+            </p>
+          </div>
+          <div class="contact__map-actions">
+            <button type="button" class="btn btn--outline-dark" id="btnCopyMapAddress">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Salin Alamat</span>
+            </button>
+            <a href="https://maps.google.com/?q=FYP+Padel+Court+Tasikmalaya" target="_blank" rel="noopener noreferrer" class="btn btn--primary" id="btnOpenGoogleMaps">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span>Buka di Google Maps</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact__map-frame-box">
+          <iframe
+            src="https://maps.google.com/maps?q=For%20You%20Padel%20Tasikmalaya&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            class="contact__map-iframe"
+            title="Google Maps Lokasi FYP Padel Court Tasikmalaya"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+          <div class="map-overlay-badge">
+            <div class="map-overlay-badge__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18"/></svg>
+            </div>
+            <div>
+              <strong>For You Padel Court</strong>
+              <p>Tasikmalaya · 3 Courts & Café</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -621,6 +1082,7 @@
         <div class="footer__links">
           <a href="#about">Tentang</a>
           <a href="#facilities">Fasilitas</a>
+          <a href="#booking">Booking</a>
           <a href="#gallery">Galeri</a>
           <a href="#tournament">Tournament</a>
           <a href="#syarat">Kualifikasi</a>
@@ -632,7 +1094,20 @@
         </div>
       </div>
     </div>
-  </footer>
+  <!-- PWA Floating Prompt Banner -->
+  <div class="pwa-banner" id="pwaBanner">
+    <div class="pwa-banner__icon">
+      <img src="/pwa-icon-192.png" alt="FYP Padel App Icon" width="46" height="46">
+    </div>
+    <div class="pwa-banner__text">
+      <div class="pwa-banner__title">Pasang Aplikasi FYP Padel</div>
+      <div class="pwa-banner__desc">Akses cepat booking lapangan & jadwal turnamen langsung dari layar utama HP Anda.</div>
+    </div>
+    <div class="pwa-banner__actions">
+      <button type="button" class="btn btn--primary btn--sm" id="btnInstallPwa">Install</button>
+      <button type="button" class="pwa-banner__close" id="btnClosePwaBanner" aria-label="Tutup Banner">✕</button>
+    </div>
+  </div>
 
   <script type="module" src="/main.js"></script>
 </body>
