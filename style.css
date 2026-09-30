@@ -2714,23 +2714,30 @@ ul { list-style: none; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--ink-light);
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: rgba(91, 33, 182, 0.08);
+  border: 1.5px solid rgba(91, 33, 182, 0.25);
+  color: var(--purple);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s var(--ease-out);
-  backdrop-filter: blur(8px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.navbar__pwa-btn svg,
+.navbar__pwa-btn span {
+  pointer-events: none;
 }
 .navbar__pwa-btn:hover {
-  background: var(--purple-vivid);
-  border-color: var(--purple-light);
+  background: var(--purple);
+  border-color: var(--purple);
   color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(91, 33, 182, 0.25);
+}
+.navbar__pwa-btn:active {
+  transform: scale(0.97);
 }
 .navbar__mobile-actions {
   display: flex;
@@ -2745,19 +2752,28 @@ ul { list-style: none; }
   justify-content: center;
   gap: 8px;
   padding: 12px 18px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: var(--ink-light);
+  border-radius: 100px;
+  background: rgba(91, 33, 182, 0.08);
+  border: 1.5px solid rgba(91, 33, 182, 0.25);
+  color: var(--purple);
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
 }
+.navbar__mobile-pwa-btn svg,
+.navbar__mobile-pwa-btn span {
+  pointer-events: none;
+}
 .navbar__mobile-pwa-btn:hover {
-  background: var(--purple-vivid);
+  background: var(--purple);
+  border-color: var(--purple);
   color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(91, 33, 182, 0.25);
+}
+.navbar__mobile-pwa-btn:active {
+  transform: scale(0.98);
 }
 
 /* Floating PWA Banner */
