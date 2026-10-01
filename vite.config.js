@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         tournament: resolve(import.meta.dirname, 'tournament.html'),
+        admin: resolve(import.meta.dirname, 'admin.html'),
       },
     },
   },

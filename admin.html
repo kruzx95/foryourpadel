@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — For You Padel Court</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar__header">
+        <a href="/admin.html" class="admin-logo">
+          <div class="admin-logo__icon">P</div>
+          <div class="admin-logo__text">FOR YOU<br><span>PADEL</span> ADMIN</div>
+        </a>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <button type="button" class="admin-nav-item is-active" data-tab="overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <span>Ringkasan</span>
+        </button>
+
+        <button type="button" class="admin-nav-item" data-tab="slots">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Kelola Slot</span>
+        </button>
+
+        <button type="button" class="admin-nav-item" data-tab="bookings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Daftar Reservasi</span>
+        </button>
+
+        <button type="button" class="admin-nav-item" data-tab="tournament">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7v2h10v-2h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+          <span>Turnamen</span>
+        </button>
+
+        <button type="button" class="admin-nav-item" data-tab="settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Pengaturan & DB</span>
+        </button>
+      </nav>
+
+      <div class="admin-sidebar__footer">
+        <div class="admin-connection-badge" id="connectionBadge">
+          <span class="connection-dot connection-dot--demo"></span>
+          <span>Mode: <strong>Demo / Local</strong></span>
+        </div>
+        <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" id="btnLogout" style="width:100%;justify-content:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <main class="admin-main">
+      <header class="admin-header">
+        <div class="admin-header__left">
+          <button type="button" class="admin-burger-btn" id="adminBurgerBtn" aria-label="Toggle Navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 class="admin-header__title" id="headerTitle">Ringkasan & Metrik</h1>
+        </div>
+
+        <div class="admin-header__right">
+          <a href="/" target="_blank" class="btn-view-site">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Lihat Website</span>
+          </a>
+
+          <div class="admin-user-pill">
+            <div class="admin-avatar">AD</div>
+            <span class="admin-user-email" id="adminUserEmail">admin@foryoupadel.com</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <!-- ─── TAB 1: OVERVIEW ─── -->
+        <div class="admin-tab-pane is-active" id="tab-overview">
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Reservasi Hari Ini</span>
+                <div class="metric-card__icon metric-card__icon--purple">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                </div>
+              </div>
+              <div class="metric-card__value" id="metricTotalBookings">0</div>
+              <div class="metric-card__sub">Booking aktif tanggal hari ini</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Slot Terisi</span>
+                <div class="metric-card__icon metric-card__icon--mint">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+              </div>
+              <div class="metric-card__value" id="metricSlotsBooked">0 / 27</div>
+              <div class="metric-card__sub">Di seluruh 3 lapangan</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Estimasi Omzet Hari Ini</span>
+                <div class="metric-card__icon metric-card__icon--warning">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </div>
+              <div class="metric-card__value" id="metricRevenue">Rp 0</div>
+              <div class="metric-card__sub">Sewa lapangan + Add-on</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Status Turnamen</span>
+                <div class="metric-card__icon metric-card__icon--blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+                </div>
+              </div>
+              <div class="metric-card__value" id="metricTournamentStatus" style="font-size:20px;line-height:1.4;">Belum Ada</div>
+              <div class="metric-card__sub">Di halaman tournament.html</div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <div>
+                <h3 class="admin-card__title">Aksi Cepat Admin</h3>
+                <p class="admin-card__desc">Pintasan operasi harian petugas kasir lapangan</p>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="admin-btn admin-btn--mint" id="btnOpenAddBooking">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>+ Tambah Booking Walk-In</span>
+                </button>
+              </div>
+            </div>
+            <p style="font-size:13.5px;color:var(--muted);line-height:1.6;">
+              Gunakan menu <strong>Kelola Slot</strong> untuk melihat status ketersediaan lapangan secara visual per jam, atau <strong>Daftar Reservasi</strong> untuk mengubah status DP pemesan dan langsung menghubungi via WhatsApp.
+            </p>
+          </div>
+        </div>
+
+        <!-- ─── TAB 2: KELOLA SLOT ─── -->
+        <div class="admin-tab-pane" id="tab-slots">
+          <div class="admin-card">
+            <div class="slot-filters-bar">
+              <div class="slot-date-controls">
+                <button type="button" class="slot-date-btn is-active" id="btnSlotToday">Hari Ini</button>
+                <button type="button" class="slot-date-btn" id="btnSlotTomorrow">Besok</button>
+                <input type="date" class="admin-input-date" id="slotDatePicker">
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:var(--muted);">
+                <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--mint);"></span> Kosong</span>
+                <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--purple-vivid);"></span> Booked</span>
+                <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--danger);"></span> Tutup</span>
+              </div>
+            </div>
+
+            <div class="slots-matrix" id="slotsMatrix">
+              <!-- Rendered by admin.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── TAB 3: DAFTAR RESERVASI ─── -->
+        <div class="admin-tab-pane" id="tab-bookings">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <div>
+                <h3 class="admin-card__title">Daftar Reservasi Pemain</h3>
+                <p class="admin-card__desc">Semua pesanan masuk dari website publik atau input manual admin</p>
+              </div>
+              <button type="button" class="admin-btn admin-btn--mint" id="btnOpenAddBooking2">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>+ Booking Manual</span>
+              </button>
+            </div>
+
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Kode</th>
+                    <th>Jadwal</th>
+                    <th>Lapangan</th>
+                    <th>Pemesan</th>
+                    <th>Add-On</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                  <!-- Rendered by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── TAB 4: TURNAMEN ─── -->
+        <div class="admin-tab-pane" id="tab-tournament">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <div>
+                <h3 class="admin-card__title">Pengaturan Halaman Turnamen</h3>
+                <p class="admin-card__desc">Ubah status, tanggal, dan informasi hadiah tournament.html secara dinamis</p>
+              </div>
+              <button type="button" class="admin-btn admin-btn--primary" id="btnSaveTournament">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Simpan Perubahan</span>
+              </button>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Status Turnamen Saat Ini</label>
+                <select class="form-select" id="tourneyStatusSelect">
+                  <option value="no_tournament">no_tournament (Belum ada jadwal / Coming Soon)</option>
+                  <option value="upcoming">upcoming (Akan Datang / Pengumuman Tanggal)</option>
+                  <option value="registration">registration (Pendaftaran Peserta Dibuka)</option>
+                  <option value="ongoing">ongoing (Turnamen Sedang Berlangsung)</option>
+                  <option value="completed">completed (Turnamen Selesai / Juara Diumumkan)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Judul Turnamen</label>
+                <input type="text" class="form-input" id="tourneyTitleInput">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Tanggal Pelaksanaan</label>
+                <input type="text" class="form-input" id="tourneyDatesInput" placeholder="Contoh: 18 - 19 Oktober 2026">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Total Prize Pool</label>
+                <input type="text" class="form-input" id="tourneyPrizeInput" placeholder="Contoh: Rp 15.000.000">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Biaya Registrasi</label>
+                <input type="text" class="form-input" id="tourneyFeeInput" placeholder="Contoh: Rp 350.000 / Tim">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── TAB 5: PENGATURAN & DATABASE ─── -->
+        <div class="admin-tab-pane" id="tab-settings">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <div>
+                <h3 class="admin-card__title">Integrasi Supabase Database</h3>
+                <p class="admin-card__desc">Hubungkan dashboard ke database PostgreSQL Supabase Anda</p>
+              </div>
+              <button type="button" class="admin-btn admin-btn--mint" id="btnSaveSupabase">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Simpan & Tes Koneksi</span>
+              </button>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">Supabase Project URL</label>
+                <input type="url" class="form-input" id="supabaseUrlInput" placeholder="https://xxxxxxxx.supabase.co">
+              </div>
+
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">Supabase Anon Public Key</label>
+                <input type="password" class="form-input" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+              </div>
+            </div>
+
+            <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--admin-border);border-radius:var(--radius-md);">
+              <h4 style="font-size:14px;color:#fff;margin-bottom:6px;">Panduan Setup Database Supabase:</h4>
+              <ol style="margin-left:20px;font-size:13px;color:var(--muted);line-height:1.7;">
+                <li>Buka dashboard project Supabase Anda di <a href="https://supabase.com" target="_blank" style="color:var(--mint);text-decoration:underline;">supabase.com</a>.</li>
+                <li>Buka menu <strong>SQL Editor</strong>, buat New Query, lalu salin dan jalankan seluruh isi file <code style="color:var(--purple-vivid);">supabase-schema.sql</code> yang telah disiapkan di repositori ini.</li>
+                <li>Salin <strong>Project URL</strong> dan <strong>anon key</strong> dari menu <em>Project Settings &gt; API</em>, lalu tempelkan pada form di atas.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ═══════════════ MODAL EDIT / BLOKIR SLOT ═══════════════ -->
+  <div class="admin-modal-backdrop" id="modalEditSlot">
+    <div class="admin-modal">
+      <div class="admin-modal__header">
+        <h3 class="admin-modal__title">Ubah Status Slot Lapangan</h3>
+        <button type="button" class="admin-modal__close" id="btnCloseSlotModal">&times;</button>
+      </div>
+      <div class="admin-modal__body">
+        <div style="margin-bottom:16px;padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;">
+          <div style="font-weight:700;color:#fff;" id="editSlotCourtName">Court 1</div>
+          <div style="font-size:13px;color:var(--mint-light);" id="editSlotTime">18:00 - 20:00</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Status Ketersediaan</label>
+          <select class="form-select" id="editSlotStatus">
+            <option value="available">Tersedia (Buka untuk booking online)</option>
+            <option value="booked">Booked (Sudah dipesan pemain)</option>
+            <option value="blocked">Tutup / Maintenance Lapangan</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Nama Pemesan (Opsional)</label>
+          <input type="text" class="form-input" id="editSlotPlayer" placeholder="Contoh: Reza Pratama">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">No. WhatsApp Pemesan</label>
+          <input type="text" class="form-input" id="editSlotPhone" placeholder="Contoh: 081234567890">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Catatan</label>
+          <input type="text" class="form-input" id="editSlotNotes" placeholder="Contoh: Booking telepon, DP via BCA">
+        </div>
+      </div>
+      <div class="admin-modal__footer">
+        <button type="button" class="admin-btn admin-btn--primary" id="btnSaveSlotModal">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ MODAL TAMBAH BOOKING MANUAL ═══════════════ -->
+  <div class="admin-modal-backdrop" id="modalAddBooking">
+    <div class="admin-modal">
+      <div class="admin-modal__header">
+        <h3 class="admin-modal__title">+ Tambah Reservasi Manual</h3>
+        <button type="button" class="admin-modal__close" id="btnCloseAddBooking">&times;</button>
+      </div>
+      <form id="formAddBooking">
+        <div class="admin-modal__body">
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">Pilih Lapangan</label>
+            <select class="form-select" id="manualCourt" required>
+              <option value="Court 1 — Panoramic WPT">Court 1 — Panoramic WPT</option>
+              <option value="Court 2 — Standard Pro A">Court 2 — Standard Pro A</option>
+              <option value="Court 3 — Standard Pro B">Court 3 — Standard Pro B</option>
+            </select>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-input" id="manualName" required placeholder="Nama pemain">
+            </div>
+            <div class="form-group">
+              <label class="form-label">No. WhatsApp</label>
+              <input type="tel" class="form-input" id="manualPhone" required placeholder="08xxxxxxxx">
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">Tanggal Main</label>
+              <input type="date" class="form-input" id="manualDate" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jam Mulai (Slot)</label>
+              <select class="form-select" id="manualTime" required>
+                <option value="06:00 - 08:00">06:00 - 08:00</option>
+                <option value="08:00 - 10:00">08:00 - 10:00</option>
+                <option value="10:00 - 12:00">10:00 - 12:00</option>
+                <option value="12:00 - 14:00">12:00 - 14:00</option>
+                <option value="14:00 - 16:00">14:00 - 16:00</option>
+                <option value="16:00 - 18:00">16:00 - 18:00</option>
+                <option value="18:00 - 20:00" selected>18:00 - 20:00</option>
+                <option value="20:00 - 22:00">20:00 - 22:00</option>
+                <option value="22:00 - 23:00">22:00 - 23:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">Durasi (Jam)</label>
+              <input type="number" class="form-input" id="manualDuration" value="2" min="1" max="6">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status Pembayaran</label>
+              <select class="form-select" id="manualStatus">
+                <option value="pending">Pending</option>
+                <option value="paid_dp" selected>DP 50%</option>
+                <option value="paid_full">Lunas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">Sewa Raket (+Rp 35k)</label>
+              <input type="number" class="form-input" id="manualRackets" value="0" min="0" max="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Beli Bola Baru (+Rp 85k)</label>
+              <input type="number" class="form-input" id="manualBalls" value="0" min="0" max="10">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Catatan Tambahan</label>
+            <input type="text" class="form-input" id="manualNotes" placeholder="Pemain membawa raket sendiri, dsb.">
+          </div>
+        </div>
+        <div class="admin-modal__footer">
+          <button type="submit" class="admin-btn admin-btn--mint">Simpan Reservasi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════ MODAL LOGIN ADMIN ═══════════════ -->
+  <div class="admin-modal-backdrop" id="modalLogin">
+    <div class="admin-modal" style="max-width:420px;">
+      <div class="admin-modal__header">
+        <h3 class="admin-modal__title">Login Petugas FYP Admin</h3>
+      </div>
+      <form id="loginForm">
+        <div class="admin-modal__body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">
+            Masuk untuk mengelola slot lapangan, reservasi pemain, dan status turnamen.
+          </p>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label class="form-label">Email Petugas</label>
+            <input type="email" class="form-input" id="loginEmail" value="admin@foryoupadel.com" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom:20px;">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" id="loginPassword" value="password123" required>
+          </div>
+
+          <button type="submit" class="admin-btn admin-btn--primary" style="width:100%;justify-content:center;margin-bottom:12px;">
+            Masuk ke Dashboard
+          </button>
+
+          <button type="button" class="admin-btn admin-btn--mint" id="btnDemoLogin" style="width:100%;justify-content:center;">
+            ⚡ Masuk Cepat (Akun Demo)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="admin-toast-container" id="adminToastContainer"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

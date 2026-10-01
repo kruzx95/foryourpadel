@@ -1358,6 +1358,16 @@ ul { list-style: none; }
   font-weight: 800;
   box-shadow: 0 0 16px rgba(31, 190, 148, 0.4);
 }
+.time-slot-btn:disabled,
+.time-slot-btn.is-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  text-decoration: line-through;
+}
 .time-slot-selected-info {
   display: flex;
   align-items: center;

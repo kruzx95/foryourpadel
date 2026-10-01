@@ -627,6 +627,8 @@ function initBookingSystem() {
   bookingState.dateLabel = quickDates[0].label;
   bookingState.formattedDate = quickDates[0].fullFormatted;
 
+  let renderTimeSlots;
+
   if (customDatePicker) {
     customDatePicker.min = quickDates[0].iso;
     customDatePicker.value = quickDates[0].iso;
@@ -710,17 +712,34 @@ function initBookingSystem() {
   });
 
   // 4. Setup Time Slots
-  if (timeSlotsContainer) {
+  renderTimeSlots = () => {
+    if (!timeSlotsContainer) return;
     timeSlotsContainer.innerHTML = '';
+
+    // Check slot availability from storage (synced with admin dashboard / Supabase)
+    const courtCode = `court-${bookingState.courtId || 1}`;
+    let daySlots = null;
+    try {
+      const stored = localStorage.getItem(`fyp_slots_${bookingState.date}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        daySlots = parsed[courtCode] || null;
+      }
+    } catch (_) {}
+
     TIME_SLOTS.forEach(time => {
       const isPeak = checkIsPeak(time);
+      const isBooked = daySlots && daySlots[time] && daySlots[time].status !== 'available';
+
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `time-slot-btn${isPeak ? ' time-slot-btn--peak' : ''}${time === bookingState.startTime ? ' is-active' : ''}`;
+      btn.className = `time-slot-btn${isPeak ? ' time-slot-btn--peak' : ''}${time === bookingState.startTime ? ' is-active' : ''}${isBooked ? ' is-disabled' : ''}`;
       btn.textContent = time;
-      btn.title = isPeak ? 'Peak Hours (Sore/Malam)' : 'Off-Peak (Pagi/Siang)';
+      btn.disabled = isBooked;
+      btn.title = isBooked ? 'Slot sudah terisi / tidak tersedia' : (isPeak ? 'Peak Hours (Sore/Malam)' : 'Off-Peak (Pagi/Siang)');
 
       btn.addEventListener('click', () => {
+        if (btn.disabled) return;
         document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('is-active'));
         btn.classList.add('is-active');
         bookingState.startTime = time;
@@ -730,7 +749,10 @@ function initBookingSystem() {
       });
       timeSlotsContainer.appendChild(btn);
     });
-  }
+  };
+
+  renderTimeSlots();
+  window.addEventListener('storage', () => renderTimeSlots());
 
   // 5. Addon Steppers (Racket & Balls)
   if (racketPlus && racketMinus && racketCount) {
