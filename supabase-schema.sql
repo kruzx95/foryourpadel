@@ -1,6 +1,6 @@
 -- ═══════════════════════════════════════════════════════════
--- FOR YOU PADEL (FYP) — Supabase PostgreSQL Schema
--- Database Schema for Court Slots, Bookings, Tournaments & Settings
+-- FOR YOU PADEL (FYP) — Supabase PostgreSQL Schema (HARDENED)
+-- Security Best Practice: Strict Row Level Security (RLS) + Principle of Least Privilege
 -- ═══════════════════════════════════════════════════════════
 
 -- 1. COURTS TABLE
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.courts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   code VARCHAR(50) UNIQUE NOT NULL,
   name VARCHAR(100) NOT NULL,
-  type VARCHAR(50) DEFAULT 'panoramic', -- 'panoramic' | 'standard'
+  type VARCHAR(50) DEFAULT 'panoramic',
   description TEXT,
   rate_regular NUMERIC(12, 2) DEFAULT 180000,
   rate_peak NUMERIC(12, 2) DEFAULT 250000,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   court_name VARCHAR(100) NOT NULL,
   booking_date DATE NOT NULL,
   time_slot VARCHAR(50) NOT NULL,
-  duration INT DEFAULT 2, -- in hours
+  duration INT DEFAULT 2,
   customer_name VARCHAR(100) NOT NULL,
   customer_phone VARCHAR(50) NOT NULL,
   rackets_count INT DEFAULT 0,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   total_amount NUMERIC(12, 2) NOT NULL,
   payment_status VARCHAR(30) DEFAULT 'pending', -- 'pending' | 'paid_dp' | 'paid_full' | 'completed' | 'cancelled'
   notes TEXT,
-  source VARCHAR(50) DEFAULT 'whatsapp_web', -- 'whatsapp_web' | 'manual_admin' | 'walk_in'
+  source VARCHAR(50) DEFAULT 'whatsapp_web',
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS public.tournaments (
   slug VARCHAR(100) UNIQUE NOT NULL,
   title VARCHAR(150) NOT NULL,
   subtitle TEXT,
-  status VARCHAR(30) DEFAULT 'no_tournament', -- 'no_tournament' | 'upcoming' | 'registration' | 'ongoing' | 'completed'
+  status VARCHAR(30) DEFAULT 'no_tournament',
   date_start DATE,
   date_end DATE,
   venue VARCHAR(100) DEFAULT 'FYP Padel Court Tasikmalaya',
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS public.settings (
 );
 
 -- ═══════════════════════════════════════════════════════════
--- ROW LEVEL SECURITY (RLS) POLICIES
+-- ROW LEVEL SECURITY (RLS) POLICIES — HARDENED
 -- ═══════════════════════════════════════════════════════════
 ALTER TABLE public.courts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.slots ENABLE ROW LEVEL SECURITY;
@@ -86,21 +86,83 @@ ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tournaments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
 
--- Public can read courts, slots availability, and active tournament
-CREATE POLICY "Public can read active courts" ON public.courts FOR SELECT USING (is_active = true);
-CREATE POLICY "Public can read slots" ON public.slots FOR SELECT USING (true);
-CREATE POLICY "Public can read tournaments" ON public.tournaments FOR SELECT USING (true);
-CREATE POLICY "Public can read settings" ON public.settings FOR SELECT USING (true);
+-- 1. COURTS:
+-- Public can only READ active courts
+CREATE POLICY "Public read active courts" ON public.courts 
+  FOR SELECT TO anon, authenticated 
+  USING (is_active = true);
 
--- Authenticated admins can manage everything
-CREATE POLICY "Admins full access on courts" ON public.courts FOR ALL TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY "Admins full access on slots" ON public.slots FOR ALL TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY "Admins full access on bookings" ON public.bookings FOR ALL TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY "Admins full access on tournaments" ON public.tournaments FOR ALL TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY "Admins full access on settings" ON public.settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
+-- Only authenticated admins can modify courts
+CREATE POLICY "Admin manage courts" ON public.courts 
+  FOR ALL TO authenticated 
+  USING (true) WITH CHECK (true);
 
--- Public can insert new bookings (from online booking web form)
-CREATE POLICY "Public can insert bookings" ON public.bookings FOR INSERT WITH CHECK (true);
+-- 2. SLOTS & PUBLIC AVAILABILITY VIEW:
+-- Security Best Practice: Data Minimization & Privacy Protection (Zero-Trust)
+-- Public users should only know if a time slot is free or booked.
+-- Customer phone numbers, player names, and internal staff notes MUST NEVER be exposed to the public.
+
+-- Create hardened public view:
+CREATE OR REPLACE VIEW public.v_public_slots AS
+  SELECT 
+    s.id,
+    s.court_id,
+    c.code AS court_code,
+    c.name AS court_name,
+    s.slot_date,
+    s.time_start,
+    s.time_end,
+    s.status,
+    s.is_peak
+  FROM public.slots s
+  JOIN public.courts c ON c.id = s.court_id;
+
+-- Grant public read access to the non-sensitive view:
+GRANT SELECT ON public.v_public_slots TO anon, authenticated;
+
+-- On the base 'slots' table: ONLY authenticated staff can read sensitive customer data
+CREATE POLICY "Admin select raw slots" ON public.slots 
+  FOR SELECT TO authenticated 
+  USING (true);
+
+-- Only authenticated admins can insert, update, or delete slots
+CREATE POLICY "Admin manage slots" ON public.slots 
+  FOR ALL TO authenticated 
+  USING (true) WITH CHECK (true);
+
+-- 3. BOOKINGS (PRIVACY CRITICAL):
+-- Public CANNOT read bookings (prevents customer harvesting / data leak!)
+-- Public can ONLY INSERT their own booking
+CREATE POLICY "Public insert booking" ON public.bookings 
+  FOR INSERT TO anon, authenticated 
+  WITH CHECK (true);
+
+-- Only authenticated admins can read, update, or delete bookings
+CREATE POLICY "Admin manage bookings" ON public.bookings 
+  FOR ALL TO authenticated 
+  USING (true) WITH CHECK (true);
+
+-- 4. TOURNAMENTS:
+-- Public can read tournament info
+CREATE POLICY "Public read tournaments" ON public.tournaments 
+  FOR SELECT TO anon, authenticated 
+  USING (true);
+
+-- Only authenticated admins can modify tournaments
+CREATE POLICY "Admin manage tournaments" ON public.tournaments 
+  FOR ALL TO authenticated 
+  USING (true) WITH CHECK (true);
+
+-- 5. SETTINGS:
+-- Public can read public store settings (rates, hours)
+CREATE POLICY "Public read settings" ON public.settings 
+  FOR SELECT TO anon, authenticated 
+  USING (true);
+
+-- Only authenticated admins can modify settings
+CREATE POLICY "Admin manage settings" ON public.settings 
+  FOR ALL TO authenticated 
+  USING (true) WITH CHECK (true);
 
 -- ═══════════════════════════════════════════════════════════
 -- SEED INITIAL DATA

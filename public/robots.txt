@@ -1,0 +1,8 @@
+# For You Padel — robots.txt
+User-agent: *
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /staff
+Disallow: /portal
+Allow: /
+Allow: /tournament.html

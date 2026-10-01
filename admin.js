@@ -5,6 +5,11 @@
 
 import { createClient } from '@supabase/supabase-js';
 
+// ─── Environment Config & Production Hardening ───
+const ENV_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const ENV_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const IS_PROD = import.meta.env.PROD;
+
 // ─── Initial State & Mock Data ───
 const COURTS = [
   { id: 'c1', code: 'court-1', name: 'Court 1 — Panoramic WPT', type: 'Panoramic' },
@@ -82,16 +87,14 @@ class FYPAdminApp {
 
   async init() {
     this.initSupabase();
-    this.initAuth();
     this.bindEvents();
-    this.loadData();
-    this.renderAll();
+    await this.initAuth();
   }
 
   // ─── Supabase Initialization ───
   initSupabase() {
-    const savedUrl = localStorage.getItem('fyp_sb_url');
-    const savedKey = localStorage.getItem('fyp_sb_key');
+    const savedUrl = ENV_URL || localStorage.getItem('fyp_sb_url');
+    const savedKey = ENV_KEY || localStorage.getItem('fyp_sb_key');
 
     if (savedUrl && savedKey) {
       try {
@@ -125,25 +128,75 @@ class FYPAdminApp {
     }
   }
 
-  // ─── Auth ───
-  initAuth() {
-    const sessionUser = localStorage.getItem('fyp_admin_session');
-    if (sessionUser) {
-      this.currentUser = JSON.parse(sessionUser);
-      this.updateUserUI();
+  // ─── Zero-Trust Auth Guard ───
+  async initAuth() {
+    // 1. Production hardening: Remove demo buttons in production builds
+    if (IS_PROD) {
+      const devControls = document.getElementById('devModeControls');
+      if (devControls) devControls.remove();
+    }
+
+    // 2. Check live Supabase Auth session if connected
+    if (this.isLive && this.supabase) {
+      try {
+        const { data: { session } } = await this.supabase.auth.getSession();
+        if (session && session.user) {
+          this.currentUser = session.user;
+          await this.showDashboard();
+        } else {
+          this.showAuthScreen();
+        }
+      } catch (err) {
+        console.error('Auth session error:', err);
+        this.showAuthScreen();
+      }
+
+      // Supabase Realtime Auth State Listener
+      this.supabase.auth.onAuthStateChange(async (event, session) => {
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+          this.currentUser = session.user;
+          await this.showDashboard();
+        } else if (event === 'SIGNED_OUT') {
+          this.currentUser = null;
+          this.showAuthScreen();
+        }
+      });
     } else {
-      this.showLoginModal();
+      // Local dev mode fallback (only allowed when not in strict production)
+      const localSession = !IS_PROD ? localStorage.getItem('fyp_admin_session') : null;
+      if (localSession) {
+        try {
+          this.currentUser = JSON.parse(localSession);
+          await this.showDashboard();
+        } catch (_) {
+          this.showAuthScreen();
+        }
+      } else {
+        this.showAuthScreen();
+      }
     }
   }
 
-  showLoginModal() {
-    const modal = document.getElementById('modalLogin');
-    if (modal) modal.classList.add('is-open');
+  showAuthScreen() {
+    const authScreen = document.getElementById('authScreen');
+    const dashboardScreen = document.getElementById('dashboardScreen');
+    if (authScreen) authScreen.style.display = 'flex';
+    if (dashboardScreen) dashboardScreen.style.display = 'none';
+
+    // Zero-Trust: purge memory of sensitive operational data when logged out
+    this.bookings = [];
+    this.slotsData = {};
   }
 
-  hideLoginModal() {
-    const modal = document.getElementById('modalLogin');
-    if (modal) modal.classList.remove('is-open');
+  async showDashboard() {
+    const authScreen = document.getElementById('authScreen');
+    const dashboardScreen = document.getElementById('dashboardScreen');
+    if (authScreen) authScreen.style.display = 'none';
+    if (dashboardScreen) dashboardScreen.style.display = 'flex';
+
+    this.updateUserUI();
+    await this.loadData();
+    this.renderAll();
   }
 
   updateUserUI() {
@@ -154,13 +207,101 @@ class FYPAdminApp {
   }
 
   // ─── Data Loading ───
-  loadData() {
-    // 1. Slots
+  async loadData() {
+    if (this.isLive && this.supabase) {
+      try {
+        await this.loadLiveData();
+        return;
+      } catch (err) {
+        console.warn('Falling back to local data due to error:', err);
+      }
+    }
+    this.loadLocalData();
+  }
+
+  async loadLiveData() {
+    // 1. Fetch Bookings (Row Level Security protected)
+    const { data: bookingsData, error: bErr } = await this.supabase
+      .from('bookings')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!bErr && bookingsData) {
+      this.bookings = bookingsData;
+    } else {
+      this.loadLocalBookings();
+    }
+
+    // 2. Fetch Slots for selectedDate
+    const { data: slotsData, error: sErr } = await this.supabase
+      .from('slots')
+      .select('*')
+      .eq('slot_date', this.selectedDate);
+
+    // Initialize blank matrix
+    this.slotsData = {};
+    COURTS.forEach(c => {
+      this.slotsData[c.code] = {};
+      DEFAULT_SLOTS.forEach(time => {
+        this.slotsData[c.code][time] = {
+          status: 'available',
+          player: '',
+          phone: '',
+          notes: ''
+        };
+      });
+    });
+
+    if (!sErr && slotsData && slotsData.length > 0) {
+      slotsData.forEach(row => {
+        const court = COURTS.find(c => c.id === row.court_id || c.code === row.court_code);
+        const code = court ? court.code : 'court-1';
+        const timeSlot = `${row.time_start.slice(0, 5)} - ${row.time_end.slice(0, 5)}`;
+        if (this.slotsData[code] && this.slotsData[code][timeSlot]) {
+          this.slotsData[code][timeSlot] = {
+            status: row.status,
+            player: row.booked_by || '',
+            phone: row.customer_phone || '',
+            notes: row.notes || ''
+          };
+        }
+      });
+    } else {
+      this.loadLocalSlots();
+    }
+
+    // 3. Fetch Tournament
+    const { data: tourneyData } = await this.supabase
+      .from('tournaments')
+      .select('*')
+      .limit(1)
+      .maybeSingle();
+
+    if (tourneyData) {
+      this.tournamentData = {
+        status: tourneyData.status || 'no_tournament',
+        title: tourneyData.title || '',
+        dates: tourneyData.date_start ? `${tourneyData.date_start} - ${tourneyData.date_end}` : '',
+        prize: tourneyData.prize_pool_total ? `Rp ${Number(tourneyData.prize_pool_total).toLocaleString('id-ID')}` : '',
+        fee: tourneyData.entry_fee ? `Rp ${Number(tourneyData.entry_fee).toLocaleString('id-ID')}` : '',
+        venue: tourneyData.venue || 'FYP Padel Court Tasikmalaya'
+      };
+    } else {
+      this.loadLocalTournament();
+    }
+  }
+
+  loadLocalData() {
+    this.loadLocalSlots();
+    this.loadLocalBookings();
+    this.loadLocalTournament();
+  }
+
+  loadLocalSlots() {
     const savedSlots = localStorage.getItem(`fyp_slots_${this.selectedDate}`);
     if (savedSlots) {
       this.slotsData = JSON.parse(savedSlots);
     } else {
-      // Generate default available slots
       this.slotsData = {};
       COURTS.forEach(c => {
         this.slotsData[c.code] = {};
@@ -189,12 +330,14 @@ class FYPAdminApp {
       });
       this.saveSlots();
     }
+  }
 
-    // 2. Bookings
+  loadLocalBookings() {
     const savedBookings = localStorage.getItem('fyp_bookings');
     this.bookings = savedBookings ? JSON.parse(savedBookings) : [...MOCK_BOOKINGS];
+  }
 
-    // 3. Tournament
+  loadLocalTournament() {
     const savedTournament = localStorage.getItem('fyp_tournament_config');
     this.tournamentData = savedTournament ? JSON.parse(savedTournament) : {
       status: 'no_tournament',
@@ -208,6 +351,7 @@ class FYPAdminApp {
 
   saveSlots() {
     localStorage.setItem(`fyp_slots_${this.selectedDate}`, JSON.stringify(this.slotsData));
+    window.dispatchEvent(new Event('storage'));
   }
 
   saveBookings() {
@@ -340,7 +484,7 @@ class FYPAdminApp {
     if (modal) modal.classList.add('is-open');
   }
 
-  saveSlotModal() {
+  async saveSlotModal() {
     if (!this.activeEditSlot) return;
     const { courtCode, timeSlot } = this.activeEditSlot;
 
@@ -357,6 +501,29 @@ class FYPAdminApp {
     };
 
     this.saveSlots();
+
+    if (this.isLive && this.supabase) {
+      const court = COURTS.find(c => c.code === courtCode);
+      const times = timeSlot.split(' - ');
+      const timeStart = times[0].trim() + ':00';
+      const timeEnd = times[1].trim() + ':00';
+
+      try {
+        await this.supabase.from('slots').upsert({
+          court_id: court ? court.id : null,
+          slot_date: this.selectedDate,
+          time_start: timeStart,
+          time_end: timeEnd,
+          status,
+          booked_by: status === 'booked' ? player : null,
+          customer_phone: status === 'booked' ? phone : null,
+          notes: notes || null
+        }, { onConflict: 'court_id,slot_date,time_start' });
+      } catch (err) {
+        console.error('Supabase slot upsert error:', err);
+      }
+    }
+
     this.renderSlots();
     this.renderMetrics();
     this.showToast('Jadwal slot lapangan berhasil diperbarui!');
@@ -452,7 +619,7 @@ class FYPAdminApp {
     if (feeInput) feeInput.value = this.tournamentData.fee;
   }
 
-  saveTournamentForm() {
+  async saveTournamentForm() {
     this.tournamentData = {
       status: document.getElementById('tourneyStatusSelect').value,
       title: document.getElementById('tourneyTitleInput').value,
@@ -463,6 +630,21 @@ class FYPAdminApp {
     };
 
     this.saveTournament();
+
+    if (this.isLive && this.supabase) {
+      try {
+        await this.supabase.from('tournaments').upsert({
+          slug: 'fyp-tasik-padel-open-2026',
+          title: this.tournamentData.title,
+          status: this.tournamentData.status,
+          venue: this.tournamentData.venue,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'slug' });
+      } catch (err) {
+        console.error('Supabase tournament upsert error:', err);
+      }
+    }
+
     this.renderMetrics();
     this.showToast('Pengaturan Turnamen berhasil disimpan!');
   }
@@ -599,7 +781,7 @@ class FYPAdminApp {
 
     const formAddBooking = document.getElementById('formAddBooking');
     if (formAddBooking) {
-      formAddBooking.addEventListener('submit', (e) => {
+      formAddBooking.addEventListener('submit', async (e) => {
         e.preventDefault();
         const courtName = document.getElementById('manualCourt').value;
         const customerName = document.getElementById('manualName').value;
@@ -634,6 +816,27 @@ class FYPAdminApp {
 
         this.bookings.unshift(newBooking);
         this.saveBookings();
+
+        if (this.isLive && this.supabase) {
+          try {
+            await this.supabase.from('bookings').insert({
+              booking_code: newBooking.booking_code,
+              court_name: courtName,
+              booking_date: bookingDate,
+              time_slot: timeSlot,
+              duration,
+              customer_name: customerName,
+              customer_phone: customerPhone,
+              rackets_count: rackets,
+              balls_count: balls,
+              total_amount: totalAmount,
+              payment_status: status,
+              notes: newBooking.notes
+            });
+          } catch (err) {
+            console.error('Supabase booking insert error:', err);
+          }
+        }
 
         // Also mark slot if date matches
         if (bookingDate === this.selectedDate) {
@@ -673,11 +876,10 @@ class FYPAdminApp {
     const btnDemoLogin = document.getElementById('btnDemoLogin');
 
     if (btnDemoLogin) {
-      btnDemoLogin.addEventListener('click', () => {
+      btnDemoLogin.addEventListener('click', async () => {
         this.currentUser = { email: 'admin@foryoupadel.com', role: 'admin_demo' };
         localStorage.setItem('fyp_admin_session', JSON.stringify(this.currentUser));
-        this.updateUserUI();
-        this.hideLoginModal();
+        await this.showDashboard();
         this.showToast('Login berhasil sebagai Demo Admin! 🎉');
       });
     }
@@ -687,26 +889,41 @@ class FYPAdminApp {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value.trim();
+        const btnSubmit = document.getElementById('btnLoginSubmit');
 
-        if (this.isLive && this.supabase) {
-          const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
-          if (error) {
-            this.showToast('Login gagal: ' + error.message, 'error');
+        if (btnSubmit) {
+          btnSubmit.disabled = true;
+          btnSubmit.innerHTML = '<span>Memverifikasi kredensial...</span>';
+        }
+
+        try {
+          if (this.isLive && this.supabase) {
+            const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+              this.showToast('Login gagal: ' + error.message, 'error');
+            } else {
+              this.currentUser = data.user;
+              await this.showDashboard();
+              this.showToast('Login Supabase berhasil! 🚀');
+            }
           } else {
-            this.currentUser = data.user;
-            localStorage.setItem('fyp_admin_session', JSON.stringify(this.currentUser));
-            this.updateUserUI();
-            this.hideLoginModal();
-            this.showToast('Login Supabase berhasil! 🚀');
+            // Local fallback (only permitted in dev)
+            if (!IS_PROD && email && password) {
+              this.currentUser = { email, role: 'admin' };
+              localStorage.setItem('fyp_admin_session', JSON.stringify(this.currentUser));
+              await this.showDashboard();
+              this.showToast('Login berhasil! Selamat datang.');
+            } else {
+              this.showToast('Koneksi Supabase belum aktif atau akun tidak valid.', 'error');
+            }
           }
-        } else {
-          // Local fallback
-          if (email && password) {
-            this.currentUser = { email, role: 'admin' };
-            localStorage.setItem('fyp_admin_session', JSON.stringify(this.currentUser));
-            this.updateUserUI();
-            this.hideLoginModal();
-            this.showToast('Login berhasil! Selamat datang.');
+        } finally {
+          if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = `
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              <span>Masuk ke Portal</span>
+            `;
           }
         }
       });
@@ -715,13 +932,24 @@ class FYPAdminApp {
     // Logout
     const btnLogout = document.getElementById('btnLogout');
     if (btnLogout) {
-      btnLogout.addEventListener('click', () => {
-        localStorage.removeItem('fyp_admin_session');
-        this.currentUser = null;
-        this.showLoginModal();
-        this.showToast('Anda telah logout.');
+      btnLogout.addEventListener('click', async () => {
+        await this.logout();
       });
     }
+  }
+
+  async logout() {
+    if (this.isLive && this.supabase) {
+      try {
+        await this.supabase.auth.signOut();
+      } catch (err) {
+        console.error('Sign out error:', err);
+      }
+    }
+    localStorage.removeItem('fyp_admin_session');
+    this.currentUser = null;
+    this.showAuthScreen();
+    this.showToast('Anda telah logout dari portal.');
   }
 
   showToast(message, type = 'success') {

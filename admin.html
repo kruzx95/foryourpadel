@@ -3,16 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard — For You Padel Court</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>Staff Portal — For You Padel Court</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/admin.css">
 </head>
 <body>
-  <div class="admin-layout">
-    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <!-- ═══════════════ 1. ZERO-TRUST AUTH SCREEN ═══════════════ -->
+  <!-- This is the ONLY UI rendered until cryptographic session is verified -->
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-card__logo">
+        <div class="admin-logo__icon">P</div>
+        <div class="admin-logo__text">FOR YOU<br><span>PADEL</span> PORTAL</div>
+      </div>
+
+      <div class="auth-card__badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Protected Staff Area</span>
+      </div>
+
+      <h2 class="auth-card__title">Login Petugas</h2>
+      <p class="auth-card__desc">
+        Akses khusus petugas dan pengelola lapangan FYP Padel. Masukkan kredensial akun terdaftar Anda.
+      </p>
+
+      <form id="loginForm">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" for="loginEmail">Email Petugas</label>
+          <input type="email" class="form-input" id="loginEmail" placeholder="admin@foryoupadel.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="admin-btn admin-btn--primary" id="btnLoginSubmit" style="width:100%;justify-content:center;padding:12px;margin-bottom:14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span>Masuk ke Portal</span>
+        </button>
+
+        <!-- Dev Mode Helper: Hidden in Production -->
+        <div id="devModeControls" style="text-align:center;">
+          <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" id="btnDemoLogin" style="width:100%;justify-content:center;color:var(--muted);">
+            ⚡ Mode Pengujian Lokal (Demo Akun)
+          </button>
+        </div>
+      </form>
+
+      <div class="auth-env-notice">
+        <strong>Status Keamanan:</strong> Sesi diautentikasi langsung oleh <em>Supabase Auth JWT</em> dan diverifikasi dengan <em>Row Level Security (RLS)</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 2. PROTECTED DASHBOARD APP (MOUNTED ONLY AFTER AUTH) ═══════════════ -->
+  <div class="admin-layout" id="dashboardScreen" style="display: none;">
+    <!-- ─── Sidebar ─── -->
     <aside class="admin-sidebar" id="adminSidebar">
       <div class="admin-sidebar__header">
         <a href="/admin.html" class="admin-logo">
@@ -60,7 +110,7 @@
       </div>
     </aside>
 
-    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <!-- ─── Main Content ─── -->
     <main class="admin-main">
       <header class="admin-header">
         <div class="admin-header__left">
@@ -290,7 +340,7 @@
               <ol style="margin-left:20px;font-size:13px;color:var(--muted);line-height:1.7;">
                 <li>Buka dashboard project Supabase Anda di <a href="https://supabase.com" target="_blank" style="color:var(--mint);text-decoration:underline;">supabase.com</a>.</li>
                 <li>Buka menu <strong>SQL Editor</strong>, buat New Query, lalu salin dan jalankan seluruh isi file <code style="color:var(--purple-vivid);">supabase-schema.sql</code> yang telah disiapkan di repositori ini.</li>
-                <li>Salin <strong>Project URL</strong> dan <strong>anon key</strong> dari menu <em>Project Settings &gt; API</em>, lalu tempelkan pada form di atas.</li>
+                <li>Salin <strong>Project URL</strong> dan <strong>anon key</strong> dari menu <em>Project Settings &gt; API</em>, lalu tempelkan pada form di atas atau isi pada file <code style="color:var(--purple-vivid);">.env</code>.</li>
               </ol>
             </div>
           </div>
@@ -425,40 +475,6 @@
         </div>
         <div class="admin-modal__footer">
           <button type="submit" class="admin-btn admin-btn--mint">Simpan Reservasi</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ═══════════════ MODAL LOGIN ADMIN ═══════════════ -->
-  <div class="admin-modal-backdrop" id="modalLogin">
-    <div class="admin-modal" style="max-width:420px;">
-      <div class="admin-modal__header">
-        <h3 class="admin-modal__title">Login Petugas FYP Admin</h3>
-      </div>
-      <form id="loginForm">
-        <div class="admin-modal__body">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">
-            Masuk untuk mengelola slot lapangan, reservasi pemain, dan status turnamen.
-          </p>
-
-          <div class="form-group" style="margin-bottom:14px;">
-            <label class="form-label">Email Petugas</label>
-            <input type="email" class="form-input" id="loginEmail" value="admin@foryoupadel.com" required>
-          </div>
-
-          <div class="form-group" style="margin-bottom:20px;">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-input" id="loginPassword" value="password123" required>
-          </div>
-
-          <button type="submit" class="admin-btn admin-btn--primary" style="width:100%;justify-content:center;margin-bottom:12px;">
-            Masuk ke Dashboard
-          </button>
-
-          <button type="button" class="admin-btn admin-btn--mint" id="btnDemoLogin" style="width:100%;justify-content:center;">
-            ⚡ Masuk Cepat (Akun Demo)
-          </button>
         </div>
       </form>
     </div>
