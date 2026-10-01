@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament — For You Padel Tasikmalaya</title>
+  <meta name="description" content="Jadwal, kategori, bracket, dan pendaftaran tournament padel di FYP Padel Court Tasikmalaya.">
+  <meta name="keywords" content="tournament padel, turnamen padel tasikmalaya, FYP padel tournament">
+  <meta property="og:title" content="Tournament — For You Padel Tasikmalaya">
+  <meta property="og:description" content="Jadwal, kategori, dan pendaftaran tournament padel di FYP Padel Court Tasikmalaya.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://foryoupadel.com/tournament.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#5B21B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FYP Padel">
+  <link rel="apple-touch-icon" href="/pwa-icon-192.png">
+  <style>
+    /* ─── Page Hero ─── */
+    .t-hero {
+      position: relative;
+      background: var(--bg-dark);
+      padding: calc(var(--nav-height) + 60px) 20px 80px;
+      overflow: hidden;
+      text-align: center;
+    }
+    @media (min-width: 768px) { .t-hero { padding: calc(var(--nav-height) + 80px) 40px 100px; } }
+    .t-hero__bg-pattern {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(91,33,182,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(31,190,148,0.2) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .t-hero__bg-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(91,33,182,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(91,33,182,0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+    .t-hero__content { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+    .t-hero__back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--purple-light); font-size: 13px; font-weight: 600;
+      margin-bottom: 28px; transition: color 0.2s, gap 0.2s;
+    }
+    .t-hero__back:hover { color: #fff; gap: 10px; }
+    .t-hero__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(91,33,182,0.3); border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--purple-light); margin-bottom: 24px;
+    }
+    .t-hero__badge-dot {
+      width: 6px; height: 6px; background: var(--mint);
+      border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(31,190,148,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(31,190,148,0); }
+    }
+    .t-hero__title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 700; line-height: 1.08; letter-spacing: -1.5px;
+      color: #fff; margin-bottom: 20px;
+    }
+    .t-hero__title .accent {
+      background: var(--gradient-mint);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .t-hero__subtitle {
+      font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,0.65);
+      max-width: 560px; margin: 0 auto 36px; line-height: 1.7;
+    }
+    .t-hero__meta {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 12px 24px; color: rgba(255,255,255,0.5); font-size: 13.5px;
+    }
+    .t-hero__meta-item { display: flex; align-items: center; gap: 7px; }
+    .t-hero__meta-item svg { flex-shrink: 0; color: var(--mint); }
+
+    /* ─── Status Badge ─── */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 100px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .status-badge--open { background: rgba(31,190,148,0.15); border: 1px solid rgba(31,190,148,0.35); color: var(--mint-light); }
+    .status-badge--upcoming { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); color: #FCD34D; }
+    .status-badge--completed { background: rgba(107,100,128,0.15); border: 1px solid rgba(107,100,128,0.3); color: var(--muted-light); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-badge--open .status-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+    /* ─── Layout ─── */
+    .t-page { background: var(--bg-page); min-height: 100vh; }
+    .t-section { padding: 72px 20px; }
+    @media (min-width: 768px) { .t-section { padding: 96px 32px; } }
+    .t-section--alt { background: #fff; }
+    .t-header { max-width: 640px; margin-bottom: 56px; }
+    .t-header--center { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+    .t-header--center .section-eyebrow { justify-content: center; }
+    .t-header--center .section-subtitle { max-width: 100%; }
+
+    /* ─── Empty State ─── */
+    .t-empty-state { text-align: center; padding: 80px 20px; max-width: 520px; margin: 0 auto; }
+    .t-empty-state__icon {
+      width: 88px; height: 88px; background: var(--purple-bg); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px; color: var(--purple);
+    }
+    .t-empty-state__title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--ink); margin-bottom: 14px; }
+    .t-empty-state__text { color: var(--muted); font-size: 15px; line-height: 1.7; margin-bottom: 36px; }
+    .t-empty-state__actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+    /* ─── Tournament Card ─── */
+    .t-tournament-card {
+      background: #fff; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg); overflow: hidden;
+      display: grid; grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) { .t-tournament-card { grid-template-columns: 480px 1fr; } }
+    .t-tournament-card__media { position: relative; min-height: 320px; background: var(--bg-dark); }
+    @media (min-width: 900px) { .t-tournament-card__media { min-height: 480px; } }
+    .t-tournament-card__img { width: 100%; height: 100%; object-fit: cover; }
+    .t-tournament-card__media-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,8,32,0.8) 0%, transparent 60%); }
+    .t-tournament-card__prize {
+      position: absolute; bottom: 20px; left: 20px;
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(31,190,148,0.15); border: 1px solid rgba(31,190,148,0.4);
+      backdrop-filter: blur(10px); border-radius: var(--radius-sm);
+      padding: 10px 16px; color: #fff; font-size: 14px; font-weight: 600;
+    }
+    .t-tournament-card__prize svg { color: var(--mint); }
+    .t-tournament-card__prize strong { color: var(--mint-light); }
+    .t-tournament-card__body { padding: 36px 32px 40px; display: flex; flex-direction: column; }
+    @media (min-width: 900px) { .t-tournament-card__body { padding: 48px 48px 52px; } }
+    .t-tournament-card__organizer { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; }
+    .t-tournament-card__name { font-family: 'Fraunces', serif; font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.1; letter-spacing: -1px; color: var(--ink); margin-bottom: 6px; }
+    .t-tournament-card__tagline { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+
+    /* ─── Meta List ─── */
+    .t-meta-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .t-meta-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--muted); }
+    .t-meta-item svg { flex-shrink: 0; color: var(--purple); margin-top: 2px; }
+    .t-meta-item strong { color: var(--ink); }
+
+    /* ─── Categories ─── */
+    .t-cats-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .t-cats-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+    .t-cat-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--line); background: #fff;
+      font-size: 13.5px; font-weight: 600; color: var(--ink);
+      cursor: pointer; transition: all 0.2s var(--ease-out); text-decoration: none;
+    }
+    .t-cat-btn:hover { border-color: var(--purple); background: var(--purple-bg); color: var(--purple); transform: translateX(4px); }
+    .t-cat-btn--disabled { opacity: 0.5; pointer-events: none; cursor: default; }
+    .t-cat-btn__left { display: flex; align-items: center; gap: 10px; }
+    .t-cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .t-cat-dot--women { background: #EC4899; }
+    .t-cat-dot--men { background: var(--purple); }
+    .t-cat-dot--open { background: var(--mint); }
+    .t-cat-btn__tier { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--bg-page); padding: 2px 8px; border-radius: 100px; }
+
+    .t-card-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    @media (min-width: 480px) { .t-card-actions { flex-direction: row; flex-wrap: wrap; } }
+
+    /* ─── Prize Pool ─── */
+    .t-prizes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .t-prize-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md);
+      padding: 24px 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .t-prize-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .t-prize-card__rank { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .t-prize-card__amount { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .t-prize-card__amount--gold { color: #D97706; }
+    .t-prize-card__amount--silver { color: #6B7280; }
+    .t-prize-card__amount--bronze-prize { color: #92400E; }
+    .t-prize-card__cat { font-size: 12px; color: var(--muted); }
+    .t-prize-card--gold { border-top: 3px solid #D97706; }
+    .t-prize-card--silver { border-top: 3px solid #9CA3AF; }
+    .t-prize-card--bronze-prize { border-top: 3px solid #B45309; }
+
+    /* ─── Schedule ─── */
+    .t-schedule-tabs { display: flex; gap: 4px; background: var(--bg-page); border-radius: var(--radius-md); padding: 4px; margin-bottom: 28px; overflow-x: auto; }
+    .t-schedule-tab { flex-shrink: 0; padding: 10px 20px; font-size: 13.5px; font-weight: 700; color: var(--muted); border-radius: var(--radius-sm); background: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .t-schedule-tab.is-active { background: #fff; color: var(--purple); box-shadow: var(--shadow-sm); }
+    .t-match-list { display: flex; flex-direction: column; gap: 10px; }
+    .t-match-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md);
+      padding: 16px 20px; display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 16px; transition: box-shadow 0.2s;
+    }
+    .t-match-card:hover { box-shadow: var(--shadow-sm); }
+    .t-match-team { display: flex; flex-direction: column; gap: 2px; }
+    .t-match-team--right { text-align: right; }
+    .t-match-team__name { font-weight: 700; font-size: 14px; color: var(--ink); }
+    .t-match-team__player { font-size: 12px; color: var(--muted); }
+    .t-match-vs { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .t-match-score { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.5px; }
+    .t-match-score--tbd { color: var(--muted-light); font-size: 14px; font-family: 'Manrope', sans-serif; }
+    .t-match-time { font-size: 11px; color: var(--purple); font-weight: 600; }
+    .t-match-winner .t-match-team__name { color: var(--mint-deep); }
+    .t-schedule-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .t-schedule-empty__icon { width: 64px; height: 64px; background: var(--purple-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--purple); }
+
+    /* ─── Stats Row ─── */
+    .t-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 48px; }
+    @media (min-width: 600px) { .t-stats-row { grid-template-columns: repeat(4, 1fr); } }
+    .t-stat-card { background: var(--purple-bg); border-radius: var(--radius-md); padding: 24px 20px; text-align: center; }
+    .t-stat-card__num { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 700; color: var(--purple); line-height: 1; margin-bottom: 6px; }
+    .t-stat-card__label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ─── Register Banner ─── */
+    .t-register-banner {
+      background: var(--purple-deep); border-radius: var(--radius-lg);
+      padding: 48px 40px; text-align: center; position: relative; overflow: hidden;
+    }
+    .t-register-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(124,58,237,0.5) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 60% at 80% 100%, rgba(31,190,148,0.2) 0%, transparent 60%);
+    }
+    .t-register-banner__content { position: relative; z-index: 1; }
+    .t-register-banner__title { font-family: 'Fraunces', serif; font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.15; }
+    .t-register-banner__sub { font-size: 16px; color: rgba(255,255,255,0.65); margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+    .t-register-banner__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── Info Cards ─── */
+    .t-info-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 640px) { .t-info-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .t-info-grid { grid-template-columns: repeat(3, 1fr); } }
+    .t-info-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 28px 24px; transition: transform 0.2s, box-shadow 0.2s; }
+    .t-info-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .t-info-card__icon { width: 44px; height: 44px; background: var(--purple-bg); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--purple); margin-bottom: 16px; }
+    .t-info-card__title { font-weight: 800; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+    .t-info-card__text { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ─── Timeline ─── */
+    .t-timeline { display: flex; flex-direction: column; position: relative; }
+    .t-timeline::before { content: ''; position: absolute; left: 18px; top: 24px; bottom: 24px; width: 2px; background: var(--line); }
+    @media (min-width: 600px) { .t-timeline::before { left: 22px; } }
+    .t-timeline-item { display: flex; gap: 20px; padding-bottom: 32px; position: relative; }
+    .t-timeline-item:last-child { padding-bottom: 0; }
+    .t-timeline-dot { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; border: 2px solid var(--line); background: #fff; color: var(--muted); font-size: 13px; font-weight: 700; }
+    @media (min-width: 600px) { .t-timeline-dot { width: 46px; height: 46px; } }
+    .t-timeline-dot--done { background: var(--mint-bg); border-color: var(--mint); color: var(--mint-deep); }
+    .t-timeline-dot--active { background: var(--purple-bg); border-color: var(--purple); color: var(--purple); box-shadow: 0 0 0 4px rgba(91,33,182,0.12); }
+    .t-timeline-body { padding-top: 6px; }
+    .t-timeline-body__date { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .t-timeline-body__title { font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+    .t-timeline-body__desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── Buttons ─── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 24px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 100px; border: none; cursor: pointer;
+      text-decoration: none; transition: all 0.2s var(--ease-spring); white-space: nowrap;
+    }
+    .btn--primary { background: var(--purple); color: #fff; box-shadow: 0 4px 15px rgba(91,33,182,0.3); }
+    .btn--primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 25px rgba(91,33,182,0.35); filter: brightness(1.1); }
+    .btn--mint { background: var(--mint); color: #fff; box-shadow: 0 4px 15px rgba(31,190,148,0.3); }
+    .btn--mint:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(31,190,148,0.35); filter: brightness(1.05); }
+    .btn--ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1.5px solid rgba(255,255,255,0.2); }
+    .btn--ghost:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
+    .btn--outline { background: transparent; color: var(--purple); border: 1.5px solid var(--purple); }
+    .btn--outline:hover { background: var(--purple-bg); transform: translateY(-2px); }
+    .btn--whatsapp { background: #25D366; color: #fff; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+    .btn--whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.35); filter: brightness(1.05); }
+    .btn--sm { padding: 9px 18px; font-size: 13px; }
+
+    @media (max-width: 599px) {
+      .t-tournament-card__body { padding: 24px 20px 28px; }
+      .t-register-banner { padding: 36px 24px; }
+      .t-match-card { grid-template-columns: 1fr; text-align: center; }
+      .t-match-team--right { text-align: center; }
+    }
+  </style>
+</head>
+<body class="t-page">
+
+  <!-- ═══════════════ NAVIGATION ═══════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="/" class="navbar__logo" id="nav-logo">
+        <span class="navbar__logo-icon">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M10 22 L16 8 L22 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 18 H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="navbar__logo-text">FOR YOU<br><strong>PADEL</strong></span>
+      </a>
+      <ul class="navbar__links" id="nav-links">
+        <li><a href="/#about" class="navbar__link">Tentang</a></li>
+        <li><a href="/#facilities" class="navbar__link">Fasilitas</a></li>
+        <li><a href="/#gallery" class="navbar__link">Galeri</a></li>
+        <li><a href="/tournament.html" class="navbar__link" style="color:var(--purple);background:var(--purple-bg);">Tournament</a></li>
+        <li><a href="/#contact" class="navbar__link">Kontak</a></li>
+      </ul>
+      <div class="navbar__actions">
+        <a href="/#booking" class="navbar__cta" id="nav-booking-cta">
+          <span class="navbar__cta-pulse"></span>
+          <span class="navbar__cta-text">Book Court</span>
+          <span class="navbar__cta-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+      </div>
+      <button class="navbar__burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="navbar__mobile" id="nav-mobile">
+      <ul class="navbar__mobile-links">
+        <li><a href="/#about" class="navbar__mobile-link">Tentang</a></li>
+        <li><a href="/#facilities" class="navbar__mobile-link">Fasilitas</a></li>
+        <li><a href="/#gallery" class="navbar__mobile-link">Galeri</a></li>
+        <li><a href="/tournament.html" class="navbar__mobile-link" style="color:var(--purple)">Tournament</a></li>
+        <li><a href="/#contact" class="navbar__mobile-link">Kontak</a></li>
+      </ul>
+      <div class="navbar__mobile-actions">
+        <a href="/#booking" class="navbar__mobile-cta">Book Court &rarr;</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <header class="t-hero" id="t-hero">
+    <div class="t-hero__bg-pattern"></div>
+    <div class="t-hero__bg-grid"></div>
+    <div class="t-hero__content reveal">
+      <a href="/" class="t-hero__back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Kembali ke Beranda
+      </a>
+      <div class="t-hero__badge">
+        <span class="t-hero__badge-dot"></span>
+        FYP Padel Court &middot; Tasikmalaya
+      </div>
+      <h1 class="t-hero__title">
+        Arena <span class="accent">Tournament</span><br>
+        For You Padel
+      </h1>
+      <p class="t-hero__subtitle">
+        Ikuti tournament padel terbaik di Tasikmalaya. Dari pemula hingga kompetitif &mdash;
+        ada kategori untuk semua level permainan.
+      </p>
+      <div class="t-hero__meta" id="heroMeta">
+        <div class="t-hero__meta-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>FYP Padel Court, Tasikmalaya</span>
+        </div>
+        <div class="t-hero__meta-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="heroDateMeta">Jadwal menyusul</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+  <main>
+    <section class="t-section" id="activeTournamentSection">
+      <div class="container">
+        <div id="tournamentMainContent"></div>
+      </div>
+    </section>
+
+    <section class="t-section t-section--alt" id="timelineSection">
+      <div class="container">
+        <div class="t-header reveal">
+          <p class="section-eyebrow">Tahapan Event</p>
+          <h2 class="section-title">Jadwal &amp; <span class="text-accent">Timeline</span></h2>
+          <p class="section-subtitle">Pantau progress dari pendaftaran hingga final.</p>
+        </div>
+        <div class="t-timeline reveal" id="tournamentTimeline"></div>
+      </div>
+    </section>
+
+    <section class="t-section" id="scheduleSection">
+      <div class="container">
+        <div class="t-header--center reveal">
+          <p class="section-eyebrow">Jadwal Pertandingan</p>
+          <h2 class="section-title">Bracket &amp; <span class="text-accent">Pertandingan</span></h2>
+          <p class="section-subtitle">Jadwal pertandingan per kategori. Update setelah data resmi tersedia.</p>
+        </div>
+        <div class="t-schedule-tabs reveal" id="scheduleTabs"></div>
+        <div id="scheduleMatchList"></div>
+      </div>
+    </section>
+
+    <section class="t-section t-section--alt" id="prizeSection">
+      <div class="container">
+        <div class="t-header--center reveal">
+          <p class="section-eyebrow">Hadiah</p>
+          <h2 class="section-title">Prize <span class="text-accent">Pool</span></h2>
+          <p class="section-subtitle" id="prizeTotalDesc">Total hadiah untuk seluruh kategori tournament.</p>
+        </div>
+        <div class="t-prizes-grid reveal" id="prizeGrid"></div>
+      </div>
+    </section>
+
+    <section class="t-section" id="infoSection">
+      <div class="container">
+        <div class="t-header--center reveal">
+          <p class="section-eyebrow">Informasi Penting</p>
+          <h2 class="section-title">Aturan &amp; <span class="text-accent">Ketentuan</span></h2>
+        </div>
+        <div class="t-info-grid" id="infoGrid"></div>
+      </div>
+    </section>
+
+    <section class="t-section t-section--alt" id="registerSection">
+      <div class="container">
+        <div class="t-register-banner reveal" id="registerBanner"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-icon">
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M10 22 L16 8 L22 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 18 H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span>FOR YOU PADEL</span>
+          </a>
+          <p class="footer__tagline">Premium Padel Court &middot; Tasikmalaya</p>
+        </div>
+        <div class="footer__links">
+          <a href="/">Beranda</a>
+          <a href="/#about">Tentang</a>
+          <a href="/#facilities">Fasilitas</a>
+          <a href="/#booking">Booking</a>
+          <a href="/tournament.html">Tournament</a>
+          <a href="/#contact">Kontak</a>
+        </div>
+        <div class="footer__bottom">
+          <p>&copy; 2026 For You Padel. All rights reserved.</p>
+          <p class="footer__event" id="footerEventText">FYP Padel Court &middot; Tasikmalaya</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =====================================================
+       TOURNAMENT DATA CONFIG
+       Edit bagian ini untuk setiap tournament baru.
+       ===================================================== */
+
+    /**
+     * STATUS:
+     *  'no_tournament'  - Belum ada tournament
+     *  'upcoming'       - Akan datang, pendaftaran belum dibuka
+     *  'registration'   - Pendaftaran sedang dibuka
+     *  'ongoing'        - Sedang berlangsung
+     *  'completed'      - Sudah selesai
+     */
+    const TOURNAMENT_DATA = {
+      status: 'no_tournament',
+
+      name: 'Tournament FYP Padel',
+      tagline: '',
+      organizer: 'For You Padel Court x Tasikmalaya',
+      posterUrl: '',
+      posterAlt: 'Poster Tournament FYP Padel',
+
+      dateStart: '',
+      dateEnd: '',
+      dateDisplayShort: '',
+      dateDisplayFull: '',
+      registrationDeadline: '',
+
+      venue: 'FYP Padel Court, Tasikmalaya, Jawa Barat',
+
+      prizeTotal: '',
+      prizes: [
+        // { rank: 'Juara 1', category: "Men's Elite", amount: 'Rp 10 Juta', type: 'gold' },
+        // { rank: 'Juara 2', category: "Men's Elite", amount: 'Rp 5 Juta', type: 'silver' },
+      ],
+
+      categories: [
+        // {
+        //   id: 'women-rookie',
+        //   name: 'Women Rookie',
+        //   tier: 'Beginner',
+        //   type: 'women',
+        //   formUrl: 'https://forms.gle/xxx',
+        //   registrationOpen: true,
+        //   fee: 'Rp 350.000/pasang',
+        // },
+      ],
+
+      whatsappAdmin: '6282119861664',
+      whatsappDirector: '6287886633636',
+
+      timeline: [
+        // { phase: 'Pengumuman', date: '1 Okt 2026', description: 'Info resmi tournament diumumkan.', status: 'done' },
+        // { phase: 'Pendaftaran', date: '1–20 Okt 2026', description: 'Pendaftaran dibuka via form online.', status: 'active' },
+        // { phase: 'Technical Meeting', date: '22 Okt 2026', description: 'Briefing teknis untuk seluruh peserta.', status: 'upcoming' },
+        // { phase: 'Hari Pertandingan', date: '25–26 Okt 2026', description: 'Pertandingan dimulai!', status: 'upcoming' },
+      ],
+
+      schedule: {
+        // "Women's Rookie": [
+        //   { time: '08:00', court: 'Court 1', teamA: { name: 'Pasangan A', players: 'Ani / Budi' }, teamB: { name: 'Pasangan B', players: 'Citra / Dewi' }, scoreA: null, scoreB: null },
+        // ],
+      },
+
+      rules: [
+        { icon: 'users', title: 'Format Permainan', text: 'Setiap kategori dimainkan dalam format pasangan (doubles). Satu tim terdiri dari 2 pemain.' },
+        { icon: 'calendar', title: 'Sistem Gugur', text: 'Fase grup diikuti sistem gugur (knock-out) mulai dari babak 16 besar.' },
+        { icon: 'award', title: 'Level & Kualifikasi', text: 'Setiap kategori memiliki batas level (rating) yang berbeda. Pastikan mendaftar di kategori yang sesuai.' },
+        { icon: 'clock', title: 'Check-in Wajib', text: 'Peserta wajib hadir 30 menit sebelum pertandingan. Keterlambatan lebih dari 10 menit dianggap WO.' },
+        { icon: 'shield', title: 'Ball Resmi', text: 'Bola yang digunakan adalah bola resmi tournament. Peserta tidak diperkenankan membawa bola sendiri.' },
+        { icon: 'info', title: 'Keputusan Wasit', text: 'Keputusan wasit dan panitia bersifat final. Protes dapat diajukan secara resmi ke Referee Desk.' },
+      ],
+    };
+
+    /* =====================================================
+       RENDER ENGINE
+       ===================================================== */
+
+    const ICONS = {
+      trophy: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg>',
+      calendar: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+      location: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+      users: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      award: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+      clock: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+      shield: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      info: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+      check: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      ig: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+      wa: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>',
+    };
+
+    const STATUS_MAP = {
+      no_tournament: { label: 'Belum Ada Tournament', cls: 'status-badge--completed' },
+      upcoming:      { label: 'Segera Hadir', cls: 'status-badge--upcoming' },
+      registration:  { label: 'Pendaftaran Dibuka', cls: 'status-badge--open' },
+      ongoing:       { label: 'Sedang Berlangsung', cls: 'status-badge--open' },
+      completed:     { label: 'Selesai', cls: 'status-badge--completed' },
+    };
+
+    // Hero date
+    const heroDateEl = document.getElementById('heroDateMeta');
+    if (TOURNAMENT_DATA.dateDisplayFull) heroDateEl.textContent = TOURNAMENT_DATA.dateDisplayFull;
+
+    function renderMainContent() {
+      const container = document.getElementById('tournamentMainContent');
+      const td = TOURNAMENT_DATA;
+
+      if (td.status === 'no_tournament') {
+        container.innerHTML = `
+          <div class="t-empty-state reveal">
+            <div class="t-empty-state__icon">${ICONS.trophy}</div>
+            <h2 class="t-empty-state__title">Belum Ada Tournament Aktif</h2>
+            <p class="t-empty-state__text">
+              Saat ini belum ada tournament yang berlangsung atau terjadwal.
+              Pantau terus halaman ini dan Instagram kami untuk info tournament berikutnya!
+            </p>
+            <div class="t-empty-state__actions">
+              <a href="https://instagram.com/foryoupadel" target="_blank" rel="noopener" class="btn btn--primary" id="t-ig-btn">
+                ${ICONS.ig} @foryoupadel di Instagram
+              </a>
+              <a href="https://wa.me/${td.whatsappAdmin}?text=Halo%20FYP%2C%20saya%20ingin%20tanya%20info%20tournament%20berikutnya" target="_blank" rel="noopener" class="btn btn--whatsapp" id="t-wa-btn">
+                ${ICONS.wa} Tanya Info Tournament
+              </a>
+            </div>
+          </div>`;
+        return;
+      }
+
+      const statusInfo = STATUS_MAP[td.status] || STATUS_MAP.upcoming;
+
+      const catsHtml = td.categories.length > 0
+        ? `<p class="t-cats-label">Kategori &amp; Pendaftaran</p>
+           <div class="t-cats-grid">
+             ${td.categories.map(cat => {
+               const disabled = (!cat.registrationOpen || td.status !== 'registration') ? ' t-cat-btn--disabled' : '';
+               const isLink = cat.registrationOpen && td.status === 'registration';
+               const tag = isLink ? 'a' : 'div';
+               const href = isLink ? `href="${cat.formUrl}" target="_blank" rel="noopener"` : '';
+               return `<${tag} class="t-cat-btn${disabled}" ${href} id="cat-${cat.id}">
+                 <span class="t-cat-btn__left">
+                   <span class="t-cat-dot t-cat-dot--${cat.type}"></span>
+                   <span>${cat.name}</span>
+                   <span class="t-cat-btn__tier">${cat.tier}</span>
+                   ${cat.fee ? `<span class="t-cat-btn__tier" style="background:var(--mint-bg);color:var(--mint-deep)">${cat.fee}</span>` : ''}
+                 </span>
+                 <span>${isLink ? 'Daftar &rarr;' : (td.status === 'completed' ? 'Selesai' : 'Segera')}</span>
+               </${tag}>`;
+             }).join('')}
+           </div>`
+        : `<div style="padding:20px;background:var(--bg-page);border-radius:var(--radius-sm);color:var(--muted);font-size:14px;text-align:center;margin-bottom:24px;">Daftar kategori akan diumumkan segera.</div>`;
+
+      const mediaHtml = td.posterUrl
+        ? `<img src="${td.posterUrl}" alt="${td.posterAlt}" class="t-tournament-card__img">`
+        : `<div style="height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center;">
+             <div style="width:72px;height:72px;background:rgba(91,33,182,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);">${ICONS.trophy}</div>
+             <p style="color:rgba(255,255,255,0.5);font-size:14px;">Poster tournament<br>segera hadir</p>
+           </div>`;
+
+      container.innerHTML = `
+        <div class="t-tournament-card reveal">
+          <div class="t-tournament-card__media">
+            ${mediaHtml}
+            <div class="t-tournament-card__media-overlay"></div>
+            ${td.prizeTotal ? `<div class="t-tournament-card__prize">${ICONS.trophy}<span>Prize Pool <strong>${td.prizeTotal}</strong></span></div>` : ''}
+          </div>
+          <div class="t-tournament-card__body">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+              <div class="t-tournament-card__organizer">${td.organizer}</div>
+              <span class="status-badge ${statusInfo.cls}"><span class="status-dot"></span>${statusInfo.label}</span>
+            </div>
+            <h2 class="t-tournament-card__name">${td.name}</h2>
+            ${td.tagline ? `<p class="t-tournament-card__tagline">${td.tagline}</p>` : ''}
+            <div class="t-meta-list">
+              ${td.dateDisplayFull ? `<div class="t-meta-item">${ICONS.calendar}<span><strong>${td.dateDisplayFull}</strong></span></div>` : ''}
+              ${td.venue ? `<div class="t-meta-item">${ICONS.location}<span>${td.venue}</span></div>` : ''}
+              ${td.registrationDeadline ? `<div class="t-meta-item">${ICONS.clock}<span>Deadline: <strong>${td.registrationDeadline}</strong></span></div>` : ''}
+              ${td.prizeTotal ? `<div class="t-meta-item">${ICONS.trophy}<span>Total hadiah: <strong style="color:var(--mint-deep)">${td.prizeTotal}</strong></span></div>` : ''}
+            </div>
+            ${catsHtml}
+            <div class="t-card-actions">
+              <a href="https://wa.me/${td.whatsappAdmin}?text=Halo%20Panitia%20Tournament%20FYP%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" class="btn btn--whatsapp" id="t-main-wa-btn">
+                ${ICONS.wa} Event Admin
+              </a>
+              <a href="https://wa.me/${td.whatsappDirector}?text=Halo%20Competition%20Director%20FYP%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" class="btn btn--outline" id="t-main-dir-btn">
+                ${ICONS.wa} Competition Director
+              </a>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById('tournamentTimeline');
+      const items = TOURNAMENT_DATA.timeline;
+      if (!items || items.length === 0) {
+        container.innerHTML = `<div style="color:var(--muted);font-size:14px;padding:20px 0 20px 60px;">Timeline event akan diumumkan segera.</div>`;
+        return;
+      }
+      container.innerHTML = items.map((item, i) => {
+        const dotCls = item.status === 'done' ? 'done' : item.status === 'active' ? 'active' : 'upcoming';
+        const iconHtml = item.status === 'done' ? ICONS.check : `<span>${i + 1}</span>`;
+        return `<div class="t-timeline-item">
+          <div class="t-timeline-dot t-timeline-dot--${dotCls}">${iconHtml}</div>
+          <div class="t-timeline-body">
+            <div class="t-timeline-body__date">${item.date}</div>
+            <div class="t-timeline-body__title">${item.phase}</div>
+            <div class="t-timeline-body__desc">${item.description}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderSchedule() {
+      const tabsEl = document.getElementById('scheduleTabs');
+      const listEl = document.getElementById('scheduleMatchList');
+      const schedule = TOURNAMENT_DATA.schedule;
+      const cats = Object.keys(schedule);
+
+      if (cats.length === 0) {
+        tabsEl.style.display = 'none';
+        listEl.innerHTML = `<div class="t-schedule-empty reveal">
+          <div class="t-schedule-empty__icon">${ICONS.calendar}</div>
+          <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">Jadwal Belum Tersedia</p>
+          <p style="font-size:14px;color:var(--muted);">Bracket dan jadwal pertandingan akan diumumkan setelah pendaftaran ditutup.</p>
+        </div>`;
+        return;
+      }
+
+      tabsEl.innerHTML = cats.map((cat, i) =>
+        `<button class="t-schedule-tab${i === 0 ? ' is-active' : ''}" data-cat="${cat}" id="schedtab-${i}">${cat}</button>`
+      ).join('');
+
+      function renderMatches(cat) {
+        const matches = schedule[cat];
+        if (!matches || matches.length === 0) {
+          listEl.innerHTML = `<div class="t-schedule-empty"><div class="t-schedule-empty__icon">${ICONS.calendar}</div><p style="font-size:14px;color:var(--muted);">Belum ada jadwal untuk kategori ini.</p></div>`;
+          return;
+        }
+        listEl.innerHTML = `<div class="t-match-list">${
+          matches.map((m, idx) => {
+            const hasScore = m.scoreA !== null && m.scoreB !== null;
+            const winA = hasScore && m.scoreA > m.scoreB;
+            const winB = hasScore && m.scoreB > m.scoreA;
+            return `<div class="t-match-card" id="match-${idx}">
+              <div class="t-match-team${winA ? ' t-match-winner' : ''}">
+                <div class="t-match-team__name">${m.teamA.name}</div>
+                <div class="t-match-team__player">${m.teamA.players}</div>
+              </div>
+              <div class="t-match-vs">
+                <div class="t-match-time">${m.time} &middot; ${m.court}</div>
+                ${hasScore ? `<div class="t-match-score">${m.scoreA} &mdash; ${m.scoreB}</div>` : '<div class="t-match-score t-match-score--tbd">VS</div>'}
+              </div>
+              <div class="t-match-team t-match-team--right${winB ? ' t-match-winner' : ''}">
+                <div class="t-match-team__name">${m.teamB.name}</div>
+                <div class="t-match-team__player">${m.teamB.players}</div>
+              </div>
+            </div>`;
+          }).join('')
+        }</div>`;
+      }
+
+      renderMatches(cats[0]);
+      tabsEl.querySelectorAll('.t-schedule-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabsEl.querySelectorAll('.t-schedule-tab').forEach(t => t.classList.remove('is-active'));
+          tab.classList.add('is-active');
+          renderMatches(tab.dataset.cat);
+        });
+      });
+    }
+
+    function renderPrizes() {
+      const grid = document.getElementById('prizeGrid');
+      const totalDesc = document.getElementById('prizeTotalDesc');
+      const prizes = TOURNAMENT_DATA.prizes;
+      if (TOURNAMENT_DATA.prizeTotal) totalDesc.textContent = 'Total prize pool ' + TOURNAMENT_DATA.prizeTotal + ' untuk seluruh kategori.';
+      if (!prizes || prizes.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--muted);font-size:15px;">Detail hadiah akan diumumkan segera.</div>`;
+        return;
+      }
+      const typeMap = { gold: '--gold', silver: '--silver', 'bronze': '--bronze-prize' };
+      grid.innerHTML = prizes.map(p => `
+        <div class="t-prize-card t-prize-card${typeMap[p.type] || '--gold'}">
+          <div class="t-prize-card__rank">${p.rank}</div>
+          <div class="t-prize-card__amount t-prize-card__amount${typeMap[p.type] || '--gold'}">${p.amount}</div>
+          <div class="t-prize-card__cat">${p.category}</div>
+        </div>`).join('');
+    }
+
+    function renderInfo() {
+      document.getElementById('infoGrid').innerHTML = TOURNAMENT_DATA.rules.map((rule, i) => `
+        <div class="t-info-card reveal" id="rule-${i}" style="animation-delay:${i * 60}ms">
+          <div class="t-info-card__icon">${ICONS[rule.icon] || ICONS.info}</div>
+          <div class="t-info-card__title">${rule.title}</div>
+          <div class="t-info-card__text">${rule.text}</div>
+        </div>`).join('');
+    }
+
+    function renderRegisterCTA() {
+      const banner = document.getElementById('registerBanner');
+      const td = TOURNAMENT_DATA;
+      const isRegOpen = td.status === 'registration';
+      const isNone = td.status === 'no_tournament';
+      const title = isNone ? 'Selalu Update Info Tournament' : isRegOpen ? 'Daftarkan Dirimu Sekarang!' : 'Tertarik Ikut Tournament FYP?';
+      const sub = isNone
+        ? 'Follow Instagram @foryoupadel dan simpan kontak kami agar tidak ketinggalan info tournament berikutnya.'
+        : isRegOpen
+        ? 'Pendaftaran dibuka hingga ' + (td.registrationDeadline || 'waktu yang ditentukan') + '. Segera pilih kategorimu!'
+        : 'Hubungi kami untuk info lebih lanjut atau daftarkan dirimu untuk tournament berikutnya.';
+      banner.innerHTML = `
+        <div class="t-register-banner__content">
+          <h2 class="t-register-banner__title">${title}</h2>
+          <p class="t-register-banner__sub">${sub}</p>
+          <div class="t-register-banner__actions">
+            <a href="https://instagram.com/foryoupadel" target="_blank" rel="noopener" class="btn btn--mint" id="register-ig-btn">
+              ${ICONS.ig} Follow @foryoupadel
+            </a>
+            <a href="https://wa.me/${td.whatsappAdmin}?text=Halo%20FYP%2C%20saya%20ingin%20tanya%20info%20tournament" target="_blank" rel="noopener" class="btn btn--ghost" id="register-wa-btn">
+              ${ICONS.wa} Tanya via WhatsApp
+            </a>
+          </div>
+        </div>`;
+    }
+
+    function renderFooter() {
+      const el = document.getElementById('footerEventText');
+      if (TOURNAMENT_DATA.name && TOURNAMENT_DATA.dateDisplayShort) {
+        el.textContent = TOURNAMENT_DATA.name + ' \u00b7 ' + TOURNAMENT_DATA.dateDisplayShort;
+      }
+    }
+
+    function initPage() {
+      renderMainContent();
+      renderTimeline();
+      renderSchedule();
+      renderPrizes();
+      renderInfo();
+      renderRegisterCTA();
+      renderFooter();
+
+      // Scroll reveal
+      const io = ('IntersectionObserver' in window)
+        ? new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+          }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' })
+        : null;
+      document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('is-visible'));
+
+      // Navbar scroll
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => navbar.classList.toggle('is-scrolled', window.scrollY > 40), { passive: true });
+
+      // Mobile burger
+      const burger = document.getElementById('nav-burger');
+      const mobileMenu = document.getElementById('nav-mobile');
+      burger.addEventListener('click', () => {
+        burger.classList.toggle('is-open');
+        mobileMenu.classList.toggle('is-open');
+        document.body.style.overflow = burger.classList.contains('is-open') ? 'hidden' : '';
+      });
+      document.querySelectorAll('.navbar__mobile-link, .navbar__mobile-cta').forEach(link => {
+        link.addEventListener('click', () => {
+          burger.classList.remove('is-open');
+          mobileMenu.classList.remove('is-open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPage);
+    } else {
+      initPage();
+    }
+  </script>
+</body>
+</html>
